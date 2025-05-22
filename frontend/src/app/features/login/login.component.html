@@ -1,0 +1,146 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <div class="d-flex flex-column">
+      <h4 class="modal-title">Verify Pin</h4>
+      <p class="opacity-50" style="font-size: 0.9rem">
+        Please enter the OTP sent to your registered mobile number.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <ng-otp-input
+      class="d-flex justify-content-center"
+      (onInputChange)="onInputChange($event)"
+      [config]="{
+        length: 6,
+        inputClass: 'bg-black',
+        inputStyles: {
+          color: 'green',
+        },
+        allowNumbersOnly: true,
+        placeholder: '0',
+      }"
+    ></ng-otp-input>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success w-100" (click)="otpSubmit()">Login</button>
+  </div>
+</ng-template>
+
+<div class="d-flex vh-100">
+  <section
+    class="w-100 w-md-50 d-flex h-100 flex-column justify-content-around align-items-center"
+  >
+    <div class="w-75 d-flex h-100 flex-column justify-content-around">
+      <div class="d-flex position-relative">
+        <img
+          class="position-absolute"
+          style="height: 60px; width: 60px; top: -15px; left: -15px"
+          src="assets/icons/logo.png"
+          alt=""
+        />
+        <h4
+          style="left: 40px; top: -2px"
+          class="align-self-center position-absolute"
+        >
+          CozyCare
+        </h4>
+      </div>
+      <div>
+        <h2>Hi there, 👋</h2>
+        <p class="opacity-50">Get Started with Appointments.</p>
+        <form>
+          <div class="mb-3">
+            <label for="fullName" class="form-label">Full Name</label>
+            <div class="input-group">
+              <span
+                class="input-group-text p-2 bg-dark border-end-0 border-secondary"
+              >
+                <img
+                  src="assets/icons/user.svg"
+                  alt="person icon"
+                  style="height: 20px; width: 20px"
+                />
+              </span>
+              <input
+                type="text"
+                class="form-control border-start-0 bg-dark border-secondary"
+                id="fullName"
+              />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="emailInput" class="form-label">Email Address</label>
+            <div class="input-group">
+              <span
+                class="input-group-text p-2 bg-dark border-end-0 border-secondary"
+              >
+                <img
+                  src="assets/icons/email.svg"
+                  alt="person icon"
+                  style="height: 20px; width: 20px"
+                />
+              </span>
+              <input
+                type="email"
+                class="form-control bg-dark border-start-0 border-secondary"
+                id="emailInput"
+              />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="phoneNumber" class="form-label">Phone Number</label>
+            <div class="input-group">
+              <span
+                class="input-group-text p-2 bg-dark border-end-0 border-secondary"
+              >
+                <img
+                  src="assets/icons/tele.svg"
+                  alt="person icon"
+                  style="height: 20px; width: 20px"
+                />
+              </span>
+
+              <input
+                type="text"
+                class="form-control bg-dark border-start-0 border-secondary"
+                id="phoneNumber"
+              />
+            </div>
+          </div>
+          <button
+            style="width: 100%"
+            class="btn btn-success mt-3"
+            [disabled]="isLoading"
+          >
+            @if (isLoading) {
+            <img src="assets/icons/loader.svg" alt="" />
+            }@else { Get Started }
+          </button>
+        </form>
+        <div class="d-flex mt-1 justify-content-end">
+          <a class="text-decoration-none link-primary" routerLink="admin"
+            >Admin</a
+          >
+        </div>
+      </div>
+      <div>
+        <p class="opacity-50">&#64; CozyCare copyright</p>
+      </div>
+    </div>
+  </section>
+  <div class="w-100 d-md-flex d-none">
+    <img
+      class="img-fluid object-fit-cover h-100 rounded-4"
+      src="assets/images/onboarding-img.png"
+      alt="onboarding-img"
+    />
+  </div>
+</div>
