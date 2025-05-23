@@ -1,15 +1,27 @@
-import { Component, ViewChild } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgOtpInputComponent } from 'ng-otp-input';
+import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
+import { CountryISO, SearchCountryField } from 'ngx-intl-tel-input';
 
 @Component({
   selector: 'app-login',
-  imports: [RouterLink, NgOtpInputComponent],
+  imports: [
+    RouterLink,
+    NgOtpInputComponent,
+    FormsModule,
+    NgIf,
+    NgxIntlTelInputModule,
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
+  CountryISO = CountryISO;
+  SearchCountryField = SearchCountryField;
   isLoading: boolean = false;
   isAdminModalOpen: boolean = true;
   @ViewChild('content') modalTemplate: any;
@@ -44,5 +56,9 @@ export class LoginComponent {
 
   otpSubmit() {
     console.log(this.adminOtp);
+  }
+
+  onSubmit(loginForm: NgForm) {
+    console.log(loginForm.value);
   }
 }

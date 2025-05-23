@@ -30,7 +30,9 @@
     ></ng-otp-input>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-success w-100" (click)="otpSubmit()">Login</button>
+    <button type="button" class="btn btn-success w-100" (click)="otpSubmit()">
+      Login
+    </button>
   </div>
 </ng-template>
 
@@ -56,7 +58,7 @@
       <div>
         <h2>Hi there, 👋</h2>
         <p class="opacity-50">Get Started with Appointments.</p>
-        <form>
+        <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
           <div class="mb-3">
             <label for="fullName" class="form-label">Full Name</label>
             <div class="input-group">
@@ -73,8 +75,18 @@
                 type="text"
                 class="form-control border-start-0 bg-dark border-secondary"
                 id="fullName"
+                name="fullName"
+                ngModel
+                #fullName="ngModel"
+                required
+                placeholder="Jhon Doe"
               />
             </div>
+          </div>
+          <div *ngIf="email.invalid && fullName.touched">
+            <p class="text-danger" *ngIf="fullName.errors?.['required']">
+              Full Name is required
+            </p>
           </div>
           <div class="mb-3">
             <label for="emailInput" class="form-label">Email Address</label>
@@ -92,33 +104,43 @@
                 type="email"
                 class="form-control bg-dark border-start-0 border-secondary"
                 id="emailInput"
+                name="email"
+                ngModel
+                email
+                required
+                #email="ngModel"
+                placeholder="jhondoe@gmail.com"
               />
             </div>
           </div>
+
+          <div *ngIf="email.invalid && (email.touched || email.dirty)">
+            <p class="text-danger" *ngIf="email.errors?.['required']">
+              Email is required
+            </p>
+            <p class="text-danger" *ngIf="email.errors?.['email']">
+              Email is invalid
+            </p>
+          </div>
           <div class="mb-3">
             <label for="phoneNumber" class="form-label">Phone Number</label>
-            <div class="input-group">
-              <span
-                class="input-group-text p-2 bg-dark border-end-0 border-secondary"
-              >
-                <img
-                  src="assets/icons/tele.svg"
-                  alt="person icon"
-                  style="height: 20px; width: 20px"
-                />
-              </span>
-
-              <input
-                type="text"
-                class="form-control bg-dark border-start-0 border-secondary"
-                id="phoneNumber"
-              />
+            <div class="">
+              <ngx-intl-tel-input
+                cssClass="form-control w-100 bg-dark border-secondary phone-custom"
+                [enablePlaceholder]="true"
+                [searchCountryFlag]="true"
+                [selectedCountryISO]="CountryISO.India"
+                [phoneValidation]="true"
+                name="phone"
+                ngModel
+                #phone="ngModel"
+              ></ngx-intl-tel-input>
             </div>
           </div>
           <button
             style="width: 100%"
             class="btn btn-success mt-3"
-            [disabled]="isLoading"
+            [disabled]="isLoading || loginForm.invalid"
           >
             @if (isLoading) {
             <img src="assets/icons/loader.svg" alt="" />

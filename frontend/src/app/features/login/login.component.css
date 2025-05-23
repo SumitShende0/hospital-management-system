@@ -1,0 +1,12 @@
+/* Target the input inside ngx-intl-tel-input with class 'custom' */
+.tel-input .iti__input {
+  width: 100% !important; /* Full width */
+  color: white; /* Input text color */
+  background-color: transparent; /* Optional: if background needed */
+}
+
+/* Change placeholder color to white */
+.tel-input .iti__input::placeholder {
+  color: white;
+  opacity: 1; /* Ensure placeholder color is not faded */
+}
