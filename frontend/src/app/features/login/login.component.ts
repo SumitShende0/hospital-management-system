@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgOtpInputComponent } from 'ng-otp-input';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { CountryISO, SearchCountryField } from 'ngx-intl-tel-input';
+import { ButtonComponent } from "../button/button.component";
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,8 @@ import { CountryISO, SearchCountryField } from 'ngx-intl-tel-input';
     FormsModule,
     NgIf,
     NgxIntlTelInputModule,
-  ],
+    ButtonComponent
+],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })

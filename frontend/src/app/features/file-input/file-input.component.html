@@ -1,0 +1,11 @@
+<label class="form-label" for="identificationDocumnet">
+  <ng-content></ng-content>
+</label>
+<input
+  type="file"
+  class="form-control mt-1 bg-dark border-secondary"
+  id="identificationDocumnet"
+  name="identificationDocument"
+  (change)="onFileSelected($event)"
+  accept=".jpg, .jpeg, .png"
+/>

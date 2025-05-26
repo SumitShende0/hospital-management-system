@@ -1,0 +1,9 @@
+<button
+  style="width: 100%"
+  class="btn btn-success mt-3"
+  [disabled]="isLoading || invalid"
+>
+  @if (isLoading) {
+  <img src="assets/icons/loader.svg" alt="" />
+  }@else {<ng-content></ng-content> }
+</button>

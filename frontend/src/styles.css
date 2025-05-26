@@ -59,3 +59,21 @@ input::placeholder {
   color: white;
   opacity: 0.5;
 }
+
+textarea {
+  color: white !important;
+  background-color: #212529 !important;
+  height: 10px;
+}
+
+textarea::placeholder {
+  color: white !important;
+  opacity: 0.5 !important;
+}
+
+select {
+  background-color: #212529 !important;
+  color: white !important;
+}
+
+

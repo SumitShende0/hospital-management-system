@@ -1,0 +1,416 @@
+<div class="d-flex">
+  <section class="w-100 d-flex flex-column align-items-center">
+    <div class="w-75 d-flex flex-column gap-3 mt-5">
+      <div class="d-flex position-relative mb-5">
+        <img
+          class="position-absolute"
+          style="height: 60px; width: 60px; top: -15px; left: -15px"
+          src="assets/icons/logo.png"
+          alt=""
+        />
+        <h4
+          style="left: 40px; top: -2px"
+          class="align-self-center position-absolute"
+        >
+          CozyCare
+        </h4>
+      </div>
+      <div>
+        <h1>Welcome 👋</h1>
+        <p class="opacity-50">Let us know more about yourself</p>
+      </div>
+
+      <form
+        class="bg-black mb-5"
+        (submit)="onSubmit()"
+        [formGroup]="patientForm"
+      >
+        <div class="mb-4">
+          <h3 class="mb-4">Personal Information</h3>
+          <div class="mb-3">
+            <label for="fullName" class="form-label">Full Name </label>
+            <input
+              type="text"
+              class="form-control bg-dark border-secondary"
+              formControlName="fullName"
+            />
+            @if (patientForm.get('fullName')?.invalid &&
+            patientForm.get('fullName')?.touched) {
+            <div class="text-danger">This Field is required</div>
+            }
+          </div>
+          <div class="row">
+            <div class="mb-3 col-md-6">
+              <label for="emailInput" class="form-label">Email Address</label>
+              <div class="input-group">
+                <span
+                  class="input-group-text p-2 bg-dark border-end-0 border-secondary"
+                >
+                  <img
+                    src="assets/icons/email.svg"
+                    alt="person icon"
+                    style="height: 20px; width: 20px"
+                  />
+                </span>
+                <input
+                  type="email"
+                  class="form-control bg-dark border-start-0 border-secondary"
+                  id="emailInput"
+                  name="email"
+                  formControlName="email"
+                  required
+                  placeholder="jhondoe@gmail.com"
+                />
+              </div>
+              @if (patientForm.get('email')?.invalid &&
+              patientForm.get('email')?.touched) {
+              <div class="text-danger">This Field is required</div>
+              }
+            </div>
+            <div class="mb-3 col-md-6">
+              <label for="phoneNumber" class="form-label">Phone Number</label>
+              <div class="">
+                <ngx-intl-tel-input
+                  cssClass="form-control w-100 bg-dark border-secondary phone-custom"
+                  [enablePlaceholder]="true"
+                  [searchCountryFlag]="true"
+                  [selectedCountryISO]="CountryISO.India"
+                  [phoneValidation]="true"
+                  name="phone"
+                  formControlName="phoneNumber"
+                ></ngx-intl-tel-input>
+                @if (patientForm.get('phoneNumber')?.invalid &&
+                patientForm.get('phoneNumber')?.touched) {
+                <div class="text-danger">This Field is required</div>
+                }
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="mb-3 col-md-6">
+              <label for="dateOfBirth" class="form-label">Date of Birth</label>
+              <div class="input-group">
+                <span
+                  class="input-group-text p-2 bg-dark border-end-0 border-secondary"
+                >
+                  <img
+                    src="assets/icons/calendar.svg"
+                    alt="person icon"
+                    style="height: 20px; width: 20px"
+                  />
+                </span>
+                <input
+                  type="date"
+                  class="form-control bg-dark border-start-0 border-secondary"
+                  id="dateOfBirth"
+                  name="dateOfBirth"
+                  required
+                  formControlName="dateOfBirth"
+                />
+              </div>
+              @if (patientForm.get('dateOfBirth')?.invalid &&
+              patientForm.get('dateOfBirth')?.touched) {
+              <div class="text-danger">This Field is required</div>
+              }
+            </div>
+            <div class="mb-3 col-md-6">
+              <label for="gender" class="form-label">Gender</label>
+              <div class="d-flex gap-2">
+                @for (gender of genderOptions; track gender) {
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="gender"
+                    [id]="gender"
+                    formControlName="gender"
+                    [value]="gender"
+                  />
+                  <label class="form-check-label" [for]="gender">
+                    {{ gender }}
+                  </label>
+                </div>
+                } @if (patientForm.get('gender')?.invalid &&
+                patientForm.get('gender')?.touched) {
+                <div class="text-danger">This Field is required</div>
+                }
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="mb-3 col-md-6">
+              <label for="emailInput" class="form-label">Address</label>
+              <textarea
+                name="Address"
+                id="address"
+                class="form-control"
+                placeholder="ex. 14 street, Pune"
+                formControlName="address"
+              ></textarea>
+            </div>
+            <div class="mb-3 col-md-6">
+              <label for="gender" class="form-label">Occupation</label>
+              <input
+                type="text"
+                class="form-control bg-dark border-secondary"
+                placeholder=" Software Engineer"
+                name="occupation"
+                id="occupation"
+                formControlName="occupation"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="mb-3 col-md-6">
+              <label for="guardianName" class="form-label"
+                >Emergency Contact Name</label
+              >
+              <input
+                type="text"
+                class="form-control bg-dark border-secondary"
+                placeholder="Guardian Name"
+                name="guardianName"
+                id="guardianName"
+              />
+            </div>
+            <div class="mb-3 col-md-6">
+              <label for="emergencyPhoneNumber" class="form-label"
+                >Emergency Phone Number</label
+              >
+              <div class="">
+                <ngx-intl-tel-input
+                  cssClass="form-control w-100 bg-dark border-secondary phone-custom"
+                  [enablePlaceholder]="true"
+                  [searchCountryFlag]="true"
+                  [selectedCountryISO]="CountryISO.India"
+                  [phoneValidation]="true"
+                  name="emergencyPhoneNumber"
+                  formControlName="emergencyPhoneNumber"
+                ></ngx-intl-tel-input>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3 class="mb-4">Medical Information</h3>
+          <div class="mb-3">
+            <label for="primaryCarePhysician">Primary Care Physician</label>
+            <select
+              class="form-select mt-1 border-secondary"
+              aria-label="Default select example"
+              formControlName="primaryCarePhysician"
+            >
+              <option selected disabled>Select Primary Care Physician</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+              <!-- Todo add the list of doctors from the API
+              @for (item of items; track $index) {
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+              } -->
+            </select>
+            @if (patientForm.get('primaryCarePhysician')?.invalid &&
+            patientForm.get('primaryCarePhysician')?.touched) {
+            <div class="text-danger">This Field is required</div>
+            }
+          </div>
+          <div class="row">
+            <div class="mb-3 col-md-6">
+              <label class="form-label" for="insuranceProvider"
+                >Insurance Provider</label
+              >
+              <input
+                type="text"
+                id="insuranceProvider"
+                class="form-control bg-dark border-secondary"
+                placeholder="ex: BlueCross"
+                formControlName="insuranceProvider"
+              />
+            </div>
+            <div class="mb-3 col-md-6">
+              <label class="form-label" for="insurancePolicyNumber"
+                >Insurance policy number
+              </label>
+              <input
+                type="text"
+                id="insurancePolicyNumber"
+                class="form-control bg-dark border-secondary"
+                placeholder="ex: ABC1234567"
+                formControlName="insurancePolicyNumber"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="mb-3 col-md-6">
+              <label for="allergies" class="form-label"
+                >Allergies (if any)</label
+              >
+              <textarea
+                name="allergies"
+                id="allergies"
+                class="form-control"
+                style="height: 100px"
+                placeholder="ex: Peanuts, Penicillin, Pollen"
+                formControlName="allergies"
+              ></textarea>
+            </div>
+            <div class="mb-3 col-md-6">
+              <label for="allergies" class="form-label"
+                >Current Medication</label
+              >
+              <textarea
+                name="allergies"
+                id="allergies"
+                class="form-control"
+                style="height: 100px"
+                placeholder="ex: Ibuprofen 200mg, Levothyroxine 50mcg"
+                formControlName="currentMedication"
+              ></textarea>
+            </div>
+          </div>
+          <div class="row">
+            <div class="mb-3 col-md-6">
+              <label for="allergies" class="form-label"
+                >Family medical history (if relevant)</label
+              >
+              <textarea
+                name="allergies"
+                id="allergies"
+                class="form-control"
+                style="height: 100px"
+                placeholder="ex: Mother had breast cancer"
+                formControlName="familyMedicalHistory"
+              ></textarea>
+            </div>
+            <div class="mb-3 col-md-6">
+              <label for="allergies" class="form-label"
+                >Past medical history</label
+              >
+              <textarea
+                name="allergies"
+                id="allergies"
+                class="form-control"
+                style="height: 100px"
+                placeholder="ex: Asthma diagnosis in childhood"
+                formControlName="pastMedicalHistory"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="my-4">
+          <h3 class="mb-4">Identification and Verification</h3>
+          <div class="mb-3">
+            <label for="identificationType" class="form-label"
+              >Identification Type
+            </label>
+            <select
+              class="form-select border-secondary"
+              name="identificationType"
+              id="identificationType"
+              formControlName="identificationType"
+            >
+              <option selected disabled>Select Identification Type</option>
+              @for (idType of identificationTypes; track idType) {
+              <option [value]="idType">
+                {{ idType }}
+              </option>
+              }
+            </select>
+            @if (patientForm.get('identificationType')?.invalid &&
+            patientForm.get('identificationType')?.touched) {
+            <div class="text-danger">This Field is required</div>
+            }
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="identificationNumber"
+              >Identification Number</label
+            >
+            <input
+              type="text"
+              class="mt-2 form-control bg-dark border-secondary"
+              name="identificationNumber"
+              id="identificationNumber"
+              placeholder="ex: A123456789"
+              formControlName="identificationNumber"
+            />
+            @if (patientForm.get('identificationNumber')?.invalid &&
+            patientForm.get('identificationNumber')?.touched) {
+            <div class="text-danger">This Field is required</div>
+            }
+          </div>
+        </div>
+        <div>
+          <app-file-input
+            [form]="patientForm"
+            controlName="identificationDocumentID"
+            >Scanned Copy of Identification Document</app-file-input
+          >
+        </div>
+        <div class="my-5">
+          <h3 class="mb-4">Consent and Privacy</h3>
+          <div class="form-check my-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value="true"
+              id="consentToTreatment"
+              formControlName="consentToTreatment"
+            />
+            <label class="form-check-label" for="consentToTreatment">
+              I consent to receive treatment for my health condition.
+            </label>
+            @if (patientForm.get('consentToTreatment')?.invalid &&
+            patientForm.get('consentToTreatment')?.touched) {
+            <div class="text-danger">This Field is required</div>
+            }
+          </div>
+          <div class="form-check my-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value="true"
+              id="consentToHealthInfoDisclosure"
+              formControlName="consentToHealthInfoDisclosure"
+            />
+            <label class="form-check-label" for="consentToHealthInfoDisclosure">
+              I consent to the use and disclosure of my health information for
+              treatment purposes.
+            </label>
+            @if (patientForm.get('consentToHealthInfoDisclosure')?.invalid &&
+            patientForm.get('consentToHealthInfoDisclosure')?.touched) {
+            <div class="text-danger">This Field is required</div>
+            }
+          </div>
+          <div class="form-check my-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value="true"
+              id="privacyPolicyAgreement"
+              formControlName="privacyPolicyAgreement"
+            />
+            <label class="form-check-label" for="privacyPolicyAgreement">
+              I acknowledge that I have reviewed and agree to the privacy policy
+            </label>
+            @if (patientForm.get('privacyPolicyAgreement')?.invalid &&
+            patientForm.get('privacyPolicyAgreement')?.touched) {
+            <div class="text-danger">This Field is required</div>
+            }
+          </div>
+        </div>
+        <app-button [isLoading]="isLoading" [invalid]="patientForm.invalid"
+          >Submit And Continue</app-button
+        >
+      </form>
+    </div>
+  </section>
+  <div class="w-25 d-none d-md-flex bg-dark">
+    <img
+      class="object-fit-none w-100"
+      src="assets/images/register-img.png"
+      alt="register-img"
+    />
+  </div>
+</div>
