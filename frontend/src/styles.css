@@ -76,4 +76,9 @@ select {
   color: white !important;
 }
 
-
+.bg-dark .dropdown-item:hover,
+.bg-dark .dropdown-item:focus {
+  background-color: #343a40;
+  color: white;
+  cursor: pointer;
+}

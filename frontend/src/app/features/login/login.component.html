@@ -10,6 +10,7 @@
     <button
       type="button"
       class="btn-close"
+      style="filter: brightness(0) invert(1)"
       aria-label="Close"
       (click)="modal.dismiss('Cross click')"
     ></button>
@@ -83,7 +84,7 @@
               />
             </div>
           </div>
-          <div *ngIf="email.invalid && fullName.touched">
+          <div *ngIf="fullName.invalid && fullName.touched">
             <p class="text-danger" *ngIf="fullName.errors?.['required']">
               Full Name is required
             </p>

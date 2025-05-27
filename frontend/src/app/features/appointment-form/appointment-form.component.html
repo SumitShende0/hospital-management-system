@@ -1,0 +1,165 @@
+<div class="vh-100 d-flex">
+  <section class="w-100 d-flex flex-column align-items-center">
+    <div class="w-75 d-flex flex-column gap-3 mt-5">
+      <div class="d-flex position-relative mb-5">
+        <img
+          class="position-absolute"
+          style="height: 60px; width: 60px; top: -15px; left: -15px"
+          src="assets/icons/logo.png"
+          alt=""
+        />
+        <h4
+          style="left: 40px; top: -2px"
+          class="align-self-center position-absolute"
+        >
+          CozyCare
+        </h4>
+      </div>
+      <div class="my-3">
+        <h1>Hey there 👋</h1>
+        <p class="opacity-50">Request a new appointment in 10 seconds</p>
+      </div>
+      <div>
+        <form
+          class="bg-black"
+          [formGroup]="appointmentForm"
+          (submit)="onSubmit()"
+        >
+          <div class="mb-3 w-100">
+            <label class="form-label mb-3" for="doctor">Doctor</label>
+            <div class="input-group w-100">
+              <span
+                class="input-group-text bg-dark border-end-0 border-secondary"
+                id="doctor"
+              >
+                <img
+                  alt="person icon"
+                  style="
+                    height: 20px;
+                    width: 20px;
+                    filter: brightness(0) invert(1);
+                  "
+                  src="assets/icons/search.svg"
+                  alt="search icon"
+                />
+              </span>
+              <div class="flex-grow-1">
+                <app-dropdown-menu
+                  [form]="appointmentForm"
+                  [controlName]="'doctor'"
+                  [options]="physiciansList"
+                ></app-dropdown-menu>
+              </div>
+            </div>
+            <div
+              *ngIf="
+                appointmentForm.get('doctor')?.touched &&
+                appointmentForm.get('doctor')?.invalid
+              "
+              class="text-danger"
+            >
+              <p>This field is required</p>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <div class="col-md-6">
+              <label class="form-label mb-3" for="reasonForAppointment"
+                >Reason for appointment</label
+              >
+              <textarea
+                name="reasonForAppointment"
+                id="reasonForAppointment"
+                class="form-control border-secondary"
+                style="height: 100px"
+                placeholder="ex: Annual monthly check-up"
+                formControlName="reasonForAppointment"
+              ></textarea>
+              <div
+                *ngIf="
+                  appointmentForm.get('reasonForAppointment')?.touched &&
+                  appointmentForm.get('reasonForAppointment')?.invalid
+                "
+                class="text-danger"
+              >
+                <p>This field is required</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label mb-3" for="additionalComments"
+                >Additional comments/notes</label
+              >
+              <textarea
+                name="additionalComments"
+                id="additionalComments"
+                class="form-control border-secondary"
+                style="height: 100px"
+                placeholder="ex: Prefer afternoon appointments, if possible"
+                formControlName="additionalComments"
+              ></textarea>
+              <div
+                *ngIf="
+                  appointmentForm.get('additionalComments')?.touched &&
+                  appointmentForm.get('additionalComments')?.invalid
+                "
+                class="text-danger"
+              >
+                <p>This field is required</p>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="expectedAppointmentDate" class="form-label mb-3"
+              >Expected appointment date</label
+            >
+            <div class="input-group">
+              <span
+                class="input-group-text ps-3 bg-dark border-end-0 border-secondary"
+              >
+                <img
+                  alt="search icon"
+                  style="
+                    height: 20px;
+                    width: 20px;
+                    filter: brightness(0) invert(1);
+                  "
+                  src="assets/icons/calendar.svg"
+                  alt=""
+                />
+              </span>
+
+              <input
+                type="datetime-local"
+                class="form-control bg-dark border-start-0 border-secondary"
+                id="expectedAppointmentDate"
+                name="expectedAppointmentDate"
+                required
+                formControlName="expectedAppointmentDate"
+              />
+            </div>
+            <div
+              *ngIf="
+                appointmentForm.get('expectedAppointmentDate')?.touched &&
+                appointmentForm.get('expectedAppointmentDate')?.invalid
+              "
+              class="text-danger"
+            >
+              <p>This field is required</p>
+            </div>
+          </div>
+          <app-button
+            [isLoading]="isLoading"
+            [invalid]="appointmentForm.invalid"
+            >Submit and continue</app-button
+          >
+        </form>
+      </div>
+    </div>
+  </section>
+  <section class="w-25 d-none d-md-flex bg-dark">
+    <img
+      class="object-fit-cover w-100"
+      src="assets/images/appointment-img.png"
+      alt="register-img"
+    />
+  </section>
+</div>

@@ -1,0 +1,5 @@
+:host {
+    display: block; /* can also try inline-block, but block is usually fine inside a flex container */
+    width: 100%;
+  }
+  
