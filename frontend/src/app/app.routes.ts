@@ -6,6 +6,7 @@ import { PatientFormComponent } from './features/patient-form/patient-form.compo
 import { FileInputComponent } from './features/file-input/file-input.component';
 import { AppointmentFormComponent } from './features/appointment-form/appointment-form.component';
 import { SuccessPageComponent } from './features/success-page/success-page.component';
+import { AdminDashboardComponent } from './features/admin-dashboard/admin-dashboard.component';
 export const routes: Routes = [
   {
     path: '',
@@ -27,6 +28,10 @@ export const routes: Routes = [
   {
     path: 'success-page',
     component: SuccessPageComponent,
+  },
+  {
+    path: 'admin-dashboard',
+    component: AdminDashboardComponent,
   },
   {
     path: '**',

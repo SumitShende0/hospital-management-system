@@ -2,8 +2,13 @@
   <div class="modal-header">
     <div class="d-flex flex-column">
       <h4 class="modal-title">Access Verification</h4>
-      <p class="opacity-50" style="font-size: 0.9rem">
-        To access the admin page, please enter the passkey.....
+      <p
+        [ngClass]="{ 'opacity-50': !otpError, 'text-danger': otpError }"
+        style="font-size: 0.9rem"
+      >
+        @if (otpError) {
+        {{ otpError }}
+        }@else { To access the admin page, please enter the passkey..... }
       </p>
     </div>
 
@@ -16,7 +21,7 @@
     ></button>
   </div>
   <div class="modal-body">
-    <ng-otp-input
+    <ng-otp-input #otpInput
       class="d-flex justify-content-center"
       (onInputChange)="onInputChange($event)"
       [config]="{
@@ -31,7 +36,7 @@
     ></ng-otp-input>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-success w-100" (click)="otpSubmit()">
+    <button type="button" class="btn btn-success w-100" (click)="otpSubmit(otpInput)">
       Login
     </button>
   </div>
