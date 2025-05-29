@@ -1,6 +1,6 @@
 <button
   style="width: 100%"
-  class="btn btn-success mt-3"
+  [ngClass]="computedClasses"
   [disabled]="isLoading || invalid"
 >
   @if (isLoading) {

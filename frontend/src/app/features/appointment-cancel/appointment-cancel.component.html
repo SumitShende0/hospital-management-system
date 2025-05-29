@@ -1,0 +1,58 @@
+<ng-template #scheduleAppointmentForm let-modal>
+  <div class="modal-header">
+    <div class="d-flex flex-column">
+      <h4 class="modal-title">Cancel Appointment</h4>
+      <p
+        [ngClass]="{ 'opacity-50': !submitError, 'text-danger': submitError }"
+        style="font-size: 0.9rem"
+      >
+        @if (submitError) {
+        {{ submitError }}
+        }@else { Are you sure you want to cancel your appointment }
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="btn-close"
+      style="filter: brightness(0) invert(1)"
+      (click)="modal.dismiss()"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form
+      [formGroup]="appointmentCancelForm"
+      class="bg-dark"
+      (submit)="onSubmit()"
+    >
+      <div class="mb-3 w-100">
+        <label class="form-label mb-3" for="reasonForCancellation"
+          >Reason for cancellation</label
+        >
+        <textarea
+          name="reasonForCancellation"
+          id="reasonForCancellation"
+          class="form-control border-secondary"
+          style="height: 100px"
+          placeholder="ex: Urgent meeting came up"
+          formControlName="reasonForCancellation"
+        ></textarea>
+        <div
+          *ngIf="
+            appointmentCancelForm.get('reasonForCancellation')?.touched &&
+            appointmentCancelForm.get('reasonForCancellation')?.invalid
+          "
+          class="text-danger"
+        >
+          <p>This field is required</p>
+        </div>
+      </div>
+      <app-button 
+        [isLoading]="isLoading"
+        [invalid]="appointmentCancelForm.invalid"
+        [cssStyle]="'btn-danger'"
+        >Cancel Appointment</app-button
+      >
+    </form>
+  </div>
+</ng-template>

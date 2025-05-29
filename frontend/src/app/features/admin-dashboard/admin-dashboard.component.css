@@ -1,0 +1,32 @@
+table thead tr th {
+  background-color: black;
+}
+
+table thead tr {
+  border: 1px solid #212529;
+}
+
+/* Dark theme pagination */
+::ng-deep .pagination-dark .page-link {
+  background-color: #343a40;
+  border-color: #495057;
+  color: #fff;
+}
+
+::ng-deep .pagination-dark .page-link:hover {
+  background-color: #495057;
+  border-color: #6c757d;
+  color: #fff;
+}
+
+::ng-deep .pagination-dark .page-item.active .page-link {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #fff;
+}
+
+::ng-deep .pagination-dark .page-item.disabled .page-link {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: #adb5bd;
+}

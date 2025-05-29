@@ -1,1 +1,172 @@
-<p>admin-dashboard works!</p>
+<div class="container p-2">
+  <div
+    class="d-flex bg-dark p-3 rounded-5 mx-auto w-100 justify-content-between"
+  >
+    <div class="d-flex position-relative" style="height: 25px">
+      <img
+        class="position-absolute"
+        style="height: 60px; width: 60px; top: -15px; left: -15px"
+        src="assets/icons/logo.png"
+        alt=""
+      />
+      <h5
+        style="left: 40px; top: -0"
+        class="align-self-center position-absolute"
+      >
+        CozyCare
+      </h5>
+    </div>
+
+    <div class="d-flex position-relative rounded" style="height: 25px">
+      <img
+        class="position-absolute"
+        style="height: 30px; width: 30px; top: -2px; left: -100px"
+        src="assets/images/dr-lee.png"
+        alt=""
+      />
+      <h5
+        style="left: 40px; top: 0px; left: -65px"
+        class="align-self-center position-absolute"
+      >
+        Admin
+      </h5>
+    </div>
+  </div>
+
+  <div class="my-5 ms-3">
+    <h1>Welcome, Admin</h1>
+    <p class="opacity-50">Start day with managing new appointments</p>
+  </div>
+
+  <div class="container">
+    <div class="row gx-5">
+      <div class="col-12 col-md-4 mb-3">
+        <div
+          class="rounded p-3 h-100"
+          style="
+            background-image: url('assets/images/appointments-bg.png');
+            background-size: cover;
+            min-width: 200px;
+          "
+        >
+          <div class="d-flex gap-2">
+            <img src="assets/icons/appointments.svg" alt="appointments icon" />
+            <p class="fs-4 align-self-end mb-0">94</p>
+          </div>
+          <p class="mt-3">Total number of scheduled appointments</p>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4 mb-3">
+        <div
+          class="rounded p-3 h-100"
+          style="
+            background-image: url('assets/images/pending-bg.png');
+            background-size: cover;
+            min-width: 200px;
+          "
+        >
+          <div class="d-flex gap-2">
+            <img src="assets/icons/pending.svg" alt="pending icon" />
+            <p class="fs-4 align-self-end mb-0">94</p>
+          </div>
+          <p class="mt-3">Total number of pending appointments</p>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4 mb-3">
+        <div
+          class="rounded p-3 h-100"
+          style="
+            background-image: url('assets/images/cancelled-bg.png');
+            background-size: cover;
+            min-width: 200px;
+          "
+        >
+          <div class="d-flex gap-2">
+            <img src="assets/icons/cancelled.svg" alt="cancelled icon" />
+            <p class="fs-4 align-self-end mb-0">94</p>
+          </div>
+          <p class="mt-3">Total number of cancelled appointments</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container my-4">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-dark table-hover">
+          <thead class="">
+            <tr>
+              <th scope="col">Patient Name</th>
+              <th scope="col">Date</th>
+              <th scope="col">Status</th>
+              <th scope="col">Doctor</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let appointment of displayedAppointments">
+              <td>{{ appointment.patientName }}</td>
+              <td>{{ appointment.date | date }}</td>
+              <td>
+                <span [class]="getStatusClass(appointment.status)">
+                  <img
+                    style="width: 13px"
+                    [style.filter]="getIconFilter(appointment.status)"
+                    [src]="getStatusLogo(appointment.status)"
+                    alt=""
+                  />
+                  {{ appointment.status }}
+                </span>
+              </td>
+              <td>
+                <img
+                  style="width: 30px; margin-right: 7px"
+                  [src]="getDoctorProfile(appointment.doctor)"
+                  [alt]="appointment.doctor"
+                />
+                {{ appointment.doctor }}
+              </td>
+              <td>
+                <button
+                  class="btn text-decoration-none btn-link text-success p-0 mx-1 align-baseline"
+                  (click)="openAppointmentScheduleComponent()"
+                >
+                  Schedule
+                </button>
+                <button
+                  class="btn text-decoration-none btn-link text-white p-0 mx-1 align-baseline"
+                  (click)="openAppointmentCancelComponent()"
+                >
+                  Cancel
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="d-flex justify-content-end align-items-center mt-3">
+        <ngb-pagination
+          class="pagination-dark"
+          [(page)]="currentPage"
+          [pageSize]="pageSize"
+          [collectionSize]="collectionSize"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          [ellipses]="false"
+          [directionLinks]="true"
+          (pageChange)="onPageChange($event)"
+        >
+        </ngb-pagination>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-appointment-schedule></app-appointment-schedule>
+<app-appointment-cancel></app-appointment-cancel>

@@ -1,0 +1,122 @@
+<ng-template #scheduleAppointmentForm let-modal>
+  <div class="modal-header">
+    <div class="d-flex flex-column">
+      <h4 class="modal-title">Schedule Appointment</h4>
+      <p
+        [ngClass]="{ 'opacity-50': !submitError, 'text-danger': submitError }"
+        style="font-size: 0.9rem"
+      >
+        @if (submitError) {
+        {{ submitError }}
+        }@else { Please fill in the following details to schedule }
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="btn-close"
+      style="filter: brightness(0) invert(1)"
+      (click)="modal.dismiss()"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="appointmentScheduleForm" class="bg-dark" (submit)="onSubmit()">
+      <div class="mb-3 w-100">
+        <label class="form-label mb-3" for="doctor">Doctor</label>
+        <div class="input-group w-100">
+          <span
+            class="input-group-text bg-dark border-end-0 border-secondary"
+            id="doctor"
+          >
+            <img
+              alt="person icon"
+              style="height: 20px; width: 20px; filter: brightness(0) invert(1)"
+              src="assets/icons/search.svg"
+              alt="search icon"
+            />
+          </span>
+          <div class="flex-grow-1">
+            <app-dropdown-menu
+              [form]="appointmentScheduleForm"
+              [controlName]="'doctor'"
+              [options]="physiciansList"
+            ></app-dropdown-menu>
+          </div>
+        </div>
+        <div
+          *ngIf="
+            appointmentScheduleForm.get('doctor')?.touched &&
+            appointmentScheduleForm.get('doctor')?.invalid
+          "
+          class="text-danger"
+        >
+          <p>This field is required</p>
+        </div>
+      </div>
+
+      <div class="mb-3 w-100">
+        <label class="form-label mb-3" for="reasonForAppointment"
+          >Reason for appointment</label
+        >
+        <textarea
+          name="reasonForAppointment"
+          id="reasonForAppointment"
+          class="form-control border-secondary"
+          style="height: 100px"
+          placeholder="ex: Annual monthly check-up"
+          formControlName="reasonForAppointment"
+        ></textarea>
+        <div
+          *ngIf="
+            appointmentScheduleForm.get('reasonForAppointment')?.touched &&
+            appointmentScheduleForm.get('reasonForAppointment')?.invalid
+          "
+          class="text-danger"
+        >
+          <p>This field is required</p>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="expectedAppointmentDate" class="form-label mb-3"
+          >Expected appointment date</label
+        >
+        <div class="input-group">
+          <span
+            class="input-group-text ps-3 bg-dark border-end-0 border-secondary"
+          >
+            <img
+              alt="search icon"
+              style="height: 20px; width: 20px; filter: brightness(0) invert(1)"
+              src="assets/icons/calendar.svg"
+              alt=""
+            />
+          </span>
+
+          <input
+            type="datetime-local"
+            class="form-control bg-dark border-start-0 border-secondary"
+            id="expectedAppointmentDate"
+            name="expectedAppointmentDate"
+            required
+            formControlName="expectedAppointmentDate"
+          />
+        </div>
+        <div
+          *ngIf="
+            appointmentScheduleForm.get('expectedAppointmentDate')?.touched &&
+            appointmentScheduleForm.get('expectedAppointmentDate')?.invalid
+          "
+          class="text-danger"
+        >
+          <p>This field is required</p>
+        </div>
+      </div>
+      <app-button
+        [isLoading]="isLoading"
+        [invalid]="appointmentScheduleForm.invalid"
+        >Schedule Appointment</app-button
+      >
+    </form>
+  </div>
+</ng-template>
