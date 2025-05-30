@@ -3,18 +3,20 @@
     class="d-flex bg-dark p-3 rounded-5 mx-auto w-100 justify-content-between"
   >
     <div class="d-flex position-relative" style="height: 25px">
-      <img
-        class="position-absolute"
-        style="height: 60px; width: 60px; top: -15px; left: -15px"
-        src="assets/icons/logo.png"
-        alt=""
-      />
-      <h5
-        style="left: 40px; top: -0"
-        class="align-self-center position-absolute"
-      >
-        CozyCare
-      </h5>
+      <a [routerLink]="['/']">
+        <img
+          class="position-absolute"
+          style="height: 60px; width: 60px; top: -15px; left: -15px"
+          src="assets/icons/logo.png"
+          alt=""
+        />
+        <h5
+          style="left: 40px; top: -0"
+          class="align-self-center position-absolute text-white"
+        >
+          CozyCare
+        </h5>
+      </a>
     </div>
 
     <div class="d-flex position-relative rounded" style="height: 25px">

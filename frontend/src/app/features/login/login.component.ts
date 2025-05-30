@@ -19,6 +19,7 @@ import { HtmlTagDefinition } from '@angular/compiler';
     NgxIntlTelInputModule,
     ButtonComponent,
     NgClass,
+    RouterLink
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',

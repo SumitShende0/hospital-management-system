@@ -4,6 +4,7 @@ import { DatePipe, NgFor, NgStyle } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppointmentScheduleComponent } from '../appointment-schedule/appointment-schedule.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -13,6 +14,7 @@ import { AppointmentScheduleComponent } from '../appointment-schedule/appointmen
     NgbModule,
     AppointmentScheduleComponent,
     AppointmentCancelComponent,
+    RouterLink
   ],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css',

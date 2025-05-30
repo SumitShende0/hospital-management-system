@@ -21,7 +21,8 @@
     ></button>
   </div>
   <div class="modal-body">
-    <ng-otp-input #otpInput
+    <ng-otp-input
+      #otpInput
       class="d-flex justify-content-center"
       (onInputChange)="onInputChange($event)"
       [config]="{
@@ -36,7 +37,11 @@
     ></ng-otp-input>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-success w-100" (click)="otpSubmit(otpInput)">
+    <button
+      type="button"
+      class="btn btn-success w-100"
+      (click)="otpSubmit(otpInput)"
+    >
       Login
     </button>
   </div>
@@ -156,7 +161,8 @@
             Get Started
           </app-button>
         </form>
-        <div class="d-flex mt-1 justify-content-end">
+        <div class="d-flex mt-1 justify-content-between">
+          <a class="text-decoration-none" [routerLink]="['patient-form']">Register</a>
           <a class="text-decoration-none link-primary" routerLink="admin"
             >Admin</a
           >
