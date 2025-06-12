@@ -22,7 +22,7 @@ export class AppointmentFormComponent {
   appointmentForm: FormGroup = new FormGroup({
     doctor: new FormControl('', Validators.required),
     reasonForAppointment: new FormControl('', Validators.required),
-    additionalComments: new FormControl('', Validators.required),
+    additionalComments: new FormControl(''),
     expectedAppointmentDate: new FormControl('', Validators.required),
   });
 
