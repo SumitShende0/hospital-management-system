@@ -1,0 +1,16 @@
+package com.cozycare.cozycare_app.dto;
+
+import lombok.Data;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Data
+public class AppointmentDTO {
+
+    private UUID appointmentId;
+    private String patientName;
+    private LocalDateTime expectedAppointmentDate;
+    private String status;
+    private String doctor;
+}

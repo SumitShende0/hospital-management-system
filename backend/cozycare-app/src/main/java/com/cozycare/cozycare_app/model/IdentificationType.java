@@ -1,0 +1,15 @@
+package com.cozycare.cozycare_app.model;
+
+public enum IdentificationType {
+    BIRTH_CERTIFICATE,
+    DRIVERS_LICENSE,
+    MEDICAL_INSURANCE_CARD_POLICY,
+    MILITARY_ID_CARD,
+    NATIONAL_IDENTITY_CARD,
+    PASSPORT,
+    RESIDENT_ALIEN_CARD,
+    SOCIAL_SECURITY_CARD,
+    STATE_ID_CARD,
+    STUDENT_ID_CARD,
+    VOTER_ID_CARD
+}
