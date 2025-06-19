@@ -3,6 +3,7 @@ package com.cozycare.cozycare_app.service;
 
 import com.cozycare.cozycare_app.dto.PatientRegisterDTO;
 import com.cozycare.cozycare_app.entity.Patient;
+import com.cozycare.cozycare_app.entity.User;
 import com.cozycare.cozycare_app.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ public class PatientService {
     @Autowired
     private PatientRepository patientRepository;
 
-    public Patient registerPatient(PatientRegisterDTO patientRegister) {
+    public Patient registerPatient(PatientRegisterDTO patientRegister, User user) {
 
         Patient patient = new Patient();
         patient.setFullName(patientRegister.getFullName());
@@ -41,7 +42,7 @@ public class PatientService {
         patient.setConsentToTreatment(patientRegister.getConsentToTreatment());
         patient.setConsentToHealthInfoDisclosure(patientRegister.getConsentToHealthInfoDisclosure());
         patient.setPrivacyPolicyAgreement(patientRegister.getPrivacyPolicyAgreement());
-
-       return patientRepository.save(patient);
+        patient.setUser(user);
+        return patientRepository.save(patient);
     }
 }

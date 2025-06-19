@@ -1,13 +1,9 @@
 package com.cozycare.cozycare_app.entity;
 
-import com.cozycare.cozycare_app.model.Gender;
 import com.cozycare.cozycare_app.model.IdentificationType;
-import com.cozycare.cozycare_app.model.PhoneInput;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import lombok.Data;
-import jakarta.persistence.Entity;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -42,4 +38,9 @@ public class Patient {
     private Boolean consentToTreatment;
     private Boolean consentToHealthInfoDisclosure;
     private Boolean privacyPolicyAgreement;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "userId")
+    @JsonIgnoreProperties({"userPassword"})
+    private User user;
 }

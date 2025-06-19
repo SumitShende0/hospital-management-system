@@ -1,7 +1,7 @@
 package com.cozycare.cozycare_app.service;
 
 import com.cozycare.cozycare_app.dto.AppointmentCancelDTO;
-import com.cozycare.cozycare_app.dto.AppointmentDTO;
+import com.cozycare.cozycare_app.dto.AppointmentResponseDTO;
 import com.cozycare.cozycare_app.dto.AppointmentScheduleDTO;
 import com.cozycare.cozycare_app.dto.RegisterAppointmentDTO;
 import com.cozycare.cozycare_app.entity.Appointment;
@@ -36,7 +36,7 @@ public class AppointmentService {
         return appointmentRepository.save(newAppointment);
     }
 
-    public Page<AppointmentDTO> getAppointments(Pageable pageable, AppointmentStatus status) {
+    public Page<AppointmentResponseDTO> getAppointments(Pageable pageable, AppointmentStatus status) {
         Page<Appointment> appointmentPage;
 
         if (status == AppointmentStatus.SCHEDULED) {
@@ -51,7 +51,7 @@ public class AppointmentService {
 
 
         return appointmentPage.map(appointment -> {
-            AppointmentDTO dto = new AppointmentDTO();
+            AppointmentResponseDTO dto = new AppointmentResponseDTO();
             dto.setAppointmentId(appointment.getId());
             dto.setDoctor(appointment.getDoctor());
             dto.setStatus(appointment.getAppointmentStatus().toString());

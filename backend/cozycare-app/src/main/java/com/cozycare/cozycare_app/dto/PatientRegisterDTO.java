@@ -41,6 +41,9 @@ public class PatientRegisterDTO {
     private String familyMedicalHistory;
     private String pastMedicalHistory;
 
+    @NotNull(message = "Password is required")
+    private String password;
+
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Identification is required")

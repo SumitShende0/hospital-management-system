@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,14 +21,16 @@ public class DoctorController {
     private DoctorService doctorService;
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("doctor")
-    public ResponseEntity<String> registerDoctor(@Valid @RequestBody Doctor doctor){
+    public ResponseEntity<String> registerDoctor(@Valid @RequestBody Doctor doctor) {
         doctorService.registerDoctor(doctor);
         return ResponseEntity.status(HttpStatus.CREATED).body("Doctor created");
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PATIENT')")
     @GetMapping("doctors")
-    private ResponseEntity<List<Doctor>> getDoctors(){
+    public ResponseEntity<List<Doctor>> getDoctors() {
         List<Doctor> doctors = doctorService.getDoctors();
         return Optional.of(doctors)
                 .filter(list -> !list.isEmpty())
