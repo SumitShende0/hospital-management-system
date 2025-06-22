@@ -4,10 +4,12 @@ package com.cozycare.cozycare_app.controller;
 import com.cozycare.cozycare_app.dto.JwtResponse;
 import com.cozycare.cozycare_app.dto.PatientRegisterDTO;
 import com.cozycare.cozycare_app.entity.Patient;
+import com.cozycare.cozycare_app.entity.RefreshToken;
 import com.cozycare.cozycare_app.entity.User;
 import com.cozycare.cozycare_app.model.Role;
 import com.cozycare.cozycare_app.service.JwtService;
 import com.cozycare.cozycare_app.service.PatientService;
+import com.cozycare.cozycare_app.service.RefreshTokenService;
 import com.cozycare.cozycare_app.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,8 @@ public class PatientController {
     @Autowired
     private JwtService jwtService;
 
+    @Autowired
+    private RefreshTokenService refreshTokenService;
 
     @PostMapping("patient")
     public ResponseEntity<JwtResponse> registerPatient(@Valid @RequestBody PatientRegisterDTO patient) {
@@ -50,6 +54,7 @@ public class PatientController {
 
         User savedUser = savedPatient.getUser();
         // Generate token after saving
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(savedPatient.getEmail());
         String jwt = jwtService.generateToken(
                 savedUser.getUserEmail(),
                 savedUser.getUserRole()
@@ -57,7 +62,7 @@ public class PatientController {
         // Return same response as login
 
 
-        return ResponseEntity.ok(new JwtResponse(jwt));
+        return ResponseEntity.ok(new JwtResponse(jwt, refreshToken.getToken()));
     }
 
 }
