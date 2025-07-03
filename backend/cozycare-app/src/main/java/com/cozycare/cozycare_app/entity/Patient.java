@@ -34,6 +34,7 @@ public class Patient {
     private String pastMedicalHistory;
     private IdentificationType identificationType;
     private String identificationNumber;
+    
     private String identificationDocumentID;
     private Boolean consentToTreatment;
     private Boolean consentToHealthInfoDisclosure;

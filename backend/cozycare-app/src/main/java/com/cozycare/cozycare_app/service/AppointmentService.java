@@ -76,6 +76,7 @@ public class AppointmentService {
             dto.setExpectedAppointmentDate(appointment.getExpectedAppointmentDate());
             dto.setReasonForAppointment(appointment.getReasonForAppointment());
             dto.setReasonForCancellation(appointment.getReasonForCancellation());
+            dto.setIdentificationDocumentId(appointment.getPatient().getIdentificationDocumentID());
             return dto;
         });
 
@@ -118,5 +119,17 @@ public class AppointmentService {
     @Cacheable(value = "appointmentCounts", key = "#appointmentStatus")
     public long countOfAppointmentByStatus(AppointmentStatus appointmentStatus) {
         return appointmentRepository.countByAppointmentStatus(appointmentStatus);
+    }
+
+    public void autoAppointmentCancel() {
+        appointmentRepository.findByAppointmentStatus(AppointmentStatus.PENDING)
+                .ifPresent(appointments -> {
+                    appointments.forEach(appointment -> {
+                        if (appointment.getExpectedAppointmentDate().isBefore(LocalDateTime.now())) {
+                            appointment.setAppointmentStatus(AppointmentStatus.CANCEL);
+                            appointment.setReasonForCancellation("Appointment Date Expired before any action");
+                        }
+                    });
+                });
     }
 }

@@ -15,4 +15,5 @@ public class AppointmentResponseDTO {
     private String doctor;
     private String reasonForAppointment;
     private String reasonForCancellation;
+    private String identificationDocumentId;
 }

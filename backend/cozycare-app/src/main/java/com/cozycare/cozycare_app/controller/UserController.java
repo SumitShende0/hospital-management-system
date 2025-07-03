@@ -3,6 +3,8 @@ package com.cozycare.cozycare_app.controller;
 import com.cozycare.cozycare_app.dto.JwtResponse;
 import com.cozycare.cozycare_app.entity.RefreshToken;
 import com.cozycare.cozycare_app.entity.User;
+import com.cozycare.cozycare_app.model.Role;
+import com.cozycare.cozycare_app.service.AppointmentService;
 import com.cozycare.cozycare_app.service.JwtService;
 import com.cozycare.cozycare_app.service.RefreshTokenService;
 import com.cozycare.cozycare_app.service.UserService;
@@ -40,6 +42,9 @@ public class UserController {
     @Autowired
     RefreshTokenService refreshTokenService;
 
+    @Autowired
+    AppointmentService appointmentService;
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User userRequest) {
 
@@ -57,6 +62,9 @@ public class UserController {
                     new UsernamePasswordAuthenticationToken(userRequest.getUserEmail(), userRequest.getUserPassword())
             );
 
+            if (Role.ADMIN.name().equals(user.getUserRole())) {
+                appointmentService.autoAppointmentCancel();
+            }
             if (authentication.isAuthenticated()) {
                 // Generate JWT token and refresh token
                 //Delete old refresh token if exist
