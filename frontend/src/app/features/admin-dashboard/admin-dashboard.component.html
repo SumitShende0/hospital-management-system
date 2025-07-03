@@ -127,6 +127,7 @@
               <th scope="col">Date</th>
               <th scope="col">Status</th>
               <th scope="col">Doctor</th>
+              <th scope="col">Identification Document</th>
               <th scope="col">Actions</th>
             </tr>
           </thead>
@@ -156,13 +157,25 @@
               <td>
                 <button
                   class="btn text-decoration-none btn-link text-success p-0 mx-1 align-baseline"
+                  (click)="openDisplayImageComponent(appointment)"
+                >
+                  Show
+                </button>
+              </td>
+              <td>
+                <button
+                  class="btn text-decoration-none btn-link text-success p-0 mx-1 align-baseline"
                   (click)="openAppointmentScheduleComponent(appointment)"
                 >
                   Schedule
                 </button>
                 <button
                   class="btn text-decoration-none btn-link text-white p-0 mx-1 align-baseline"
-                  (click)="openAppointmentCancelComponent(appointment)"
+                  (click)="
+                    openAppointmentCancelComponent(
+                      appointment.identificationDocumentID
+                    )
+                  "
                 >
                   Cancel
                 </button>
@@ -203,3 +216,5 @@
   [appointment]="selectedAppointment"
   (onAppointmentCancel)="loadAppointments()"
 ></app-appointment-cancel>
+
+<app-display-image />

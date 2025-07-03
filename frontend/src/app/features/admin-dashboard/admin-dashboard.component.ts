@@ -1,3 +1,4 @@
+import { DisplayImageComponent } from './../display-image/display-image.component';
 import { AppointmentCancelComponent } from './../appointment-cancel/appointment-cancel.component';
 import { allAppointments, Doctors } from './../../model';
 import { DatePipe, NgFor, NgIf, NgStyle } from '@angular/common';
@@ -19,6 +20,7 @@ import { AdminService } from '../../services/admin.service';
     AppointmentCancelComponent,
     RouterLink,
     FormsModule,
+    DisplayImageComponent,
   ],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css',
@@ -34,10 +36,13 @@ export class AdminDashboardComponent {
   appointmentScheduleComponent!: AppointmentScheduleComponent;
   @ViewChild(AppointmentCancelComponent)
   appointmentCancelComponent!: AppointmentCancelComponent;
+  @ViewChild(DisplayImageComponent)
+  displayImageComponent!: DisplayImageComponent;
   totalNumberOfScheduleAppointment: number = 0;
   totalNumberOfPendingAppointment: number = 0;
   totalNumberOfCancelAppointment: number = 0;
   selectedAction: 'schedule' | 'cancel' | null = null;
+  selectedImageId = '';
   openAppointmentScheduleComponent(appointment: any) {
     this.selectedAppointment = null;
     this.selectedAction = null;
@@ -57,6 +62,13 @@ export class AdminDashboardComponent {
       this.selectedAppointment = appointment;
       this.selectedAction = 'cancel';
     });
+  }
+
+  openDisplayImageComponent(appointment: any) {
+    const imageId = appointment?.identificationDocumentId;
+    if (imageId) {
+      this.displayImageComponent.showImage(imageId);
+    }
   }
   displayedAppointments: any = [];
   doctors: { image: string; name: string }[] = Doctors;

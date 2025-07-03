@@ -1,0 +1,42 @@
+<ng-template #displayImage let-modal>
+  <div class="modal-header">
+    <div class="d-flex flex-column">
+      <h4 class="modal-title">Patient Identification Document</h4>
+      <p>xPlease Verify Document</p>
+    </div>
+
+    <button
+      type="button"
+      class="btn-close"
+      style="filter: brightness(0) invert(1)"
+      (click)="modal.dismiss()"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <div
+      *ngIf="isLoading"
+      class="d-flex justify-content-center align-items-center"
+      style="min-height: 200px"
+    >
+      <img
+        src="assets/icons/loader.svg"
+        alt="Loading..."
+        style="width: 60px; height: 60px"
+      />
+    </div>
+
+    <!-- Image -->
+    <img
+      *ngIf="!isLoading && imageUrl"
+      [src]="imageUrl"
+      alt="Preview"
+      class="img-fluid"
+      style="max-height: 70vh; object-fit: contain"
+    />
+
+    <!-- Error Message -->
+    <div *ngIf="!isLoading && error" class="text-danger mt-2">
+      {{ error }}
+    </div>
+  </div>
+</ng-template>

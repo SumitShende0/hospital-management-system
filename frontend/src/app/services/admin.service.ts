@@ -62,4 +62,10 @@ export class AdminService {
       `${this.apiBaseUrl}/appointment/number-of-pending-appointment/${appointmentStatus}`
     );
   }
+
+  showImage(imageId: string) {
+    return this.http.get(`${this.apiBaseUrl}/image/${imageId}`, {
+      responseType: 'blob',
+    });
+  }
 }
