@@ -17,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -28,14 +30,19 @@ public class AppointmentController {
 
     @PreAuthorize("hasRole('PATIENT')")
     @PostMapping("appointment")
-    public ResponseEntity<String> registerAppointment(@Valid @RequestBody RegisterAppointmentDTO registerAppointment) {
-        appointmentService.registerAppointment(registerAppointment);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Appointment Created Successfully");
+    public ResponseEntity<Map<String, String>> registerAppointment(@Valid @RequestBody RegisterAppointmentDTO registerAppointment, Principal principal) {
+        String userEmail = principal.getName();
+        appointmentService.registerAppointment(registerAppointment, userEmail);
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Appointment Created Successfully"));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("appointments")
-    public ResponseEntity<Page<AppointmentResponseDTO>> getAppointments(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "expectedAppointmentDate") String sortBy, @RequestParam(defaultValue = "desc") String direction, @RequestParam(required = false) AppointmentStatus status) {
+    public ResponseEntity<Page<AppointmentResponseDTO>> getAppointments(@RequestParam(defaultValue = "0") int page,
+                                                                        @RequestParam(defaultValue = "5") int size,
+                                                                        @RequestParam(defaultValue = "expectedAppointmentDate") String sortBy,
+                                                                        @RequestParam(defaultValue = "desc") String direction,
+                                                                        @RequestParam(required = false) AppointmentStatus status) {
         Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
 
         Pageable pageable = PageRequest.of(page, size, sort);
@@ -49,17 +56,38 @@ public class AppointmentController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping("appointment/{patientId}/schedule")
-    public ResponseEntity<String> scheduleAppointment(@PathVariable UUID patientId, @Valid @RequestBody AppointmentScheduleDTO appointmentSchedule) {
-        appointmentService.scheduleAppointment(patientId, appointmentSchedule);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Appointment is scheduled");
+    @PatchMapping("appointment/{appointmentId}/schedule")
+    public ResponseEntity<Map<String, String>> scheduleAppointment(@PathVariable UUID appointmentId, @Valid @RequestBody AppointmentScheduleDTO appointmentSchedule) {
+        appointmentService.scheduleAppointment(appointmentId, appointmentSchedule);
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Appointment is scheduled"));
 
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping("appointment/{patientId}/cancel")
-    public ResponseEntity<String> cancelAppointment(@PathVariable UUID patientId, @Valid @RequestBody AppointmentCancelDTO appointmentCancel) {
-        appointmentService.cancelAppointment(patientId, appointmentCancel);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Appointment is cancelled");
+    @PatchMapping("appointment/{appointmentId}/cancel")
+    public ResponseEntity<Map<String, String>> cancelAppointment(@PathVariable UUID appointmentId, @Valid @RequestBody AppointmentCancelDTO appointmentCancel) {
+        appointmentService.cancelAppointment(appointmentId, appointmentCancel);
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Appointment is Cancelled"));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("appointment/number-of-scheduled-appointment/{appointmentStatus}")
+    public ResponseEntity<Map<String, Long>> totalNumberOfScheduledAppointment(@PathVariable String appointmentStatus) {
+        Long count = appointmentService.countOfAppointmentByStatus(AppointmentStatus.valueOf(appointmentStatus.toUpperCase()));
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("count", count));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("appointment/number-of-pending-appointment/{appointmentStatus}")
+    public ResponseEntity<Map<String, Long>> totalNumberOfPendingAppointment(@PathVariable String appointmentStatus) {
+        Long count = appointmentService.countOfAppointmentByStatus(AppointmentStatus.valueOf(appointmentStatus.toUpperCase()));
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("count", count));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("appointment/number-of-cancel-appointment/{appointmentStatus}")
+    public ResponseEntity<Map<String, Long>> totalNumberOfCancelAppointment(@PathVariable String appointmentStatus) {
+        Long count = appointmentService.countOfAppointmentByStatus(AppointmentStatus.valueOf(appointmentStatus.toUpperCase()));
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("count", count));
     }
 }

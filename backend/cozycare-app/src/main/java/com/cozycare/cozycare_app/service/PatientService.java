@@ -22,8 +22,12 @@ public class PatientService {
 
         patient.setPhoneCountryCode(patientRegister.getPhoneNumber().getCountryCode());
         patient.setPhoneNumber(patientRegister.getPhoneNumber().getNumber());
-        patient.setEmergencyCountryCode(patientRegister.getEmergencyPhoneNumber().getCountryCode());
-        patient.setEmergencyPhoneNumber(patientRegister.getEmergencyPhoneNumber().getNumber());
+        patient.setEmergencyCountryCode(patientRegister.getEmergencyPhoneNumber() != null
+                ? patientRegister.getEmergencyPhoneNumber().getCountryCode()
+                : null);
+        patient.setEmergencyPhoneNumber(patientRegister.getEmergencyPhoneNumber() != null
+                ? patientRegister.getEmergencyPhoneNumber().getNumber()
+                : null);
 
         patient.setDateOfBirth(patientRegister.getDateOfBirth());
         patient.setGender(patientRegister.getGender().toString());

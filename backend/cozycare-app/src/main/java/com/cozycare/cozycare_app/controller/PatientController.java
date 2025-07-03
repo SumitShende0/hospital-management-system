@@ -13,6 +13,8 @@ import com.cozycare.cozycare_app.service.RefreshTokenService;
 import com.cozycare.cozycare_app.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -55,6 +57,14 @@ public class PatientController {
         User savedUser = savedPatient.getUser();
         // Generate token after saving
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(savedPatient.getEmail());
+        ResponseCookie cookie = ResponseCookie.from("refresh_token", refreshToken.getToken())
+                .httpOnly(true)
+                .secure(true) // use true in production
+                .sameSite("Lax")
+                .path("/")
+                .maxAge(7 * 24 * 60 * 60)
+                .build();
+
         String jwt = jwtService.generateToken(
                 savedUser.getUserEmail(),
                 savedUser.getUserRole()
@@ -62,7 +72,9 @@ public class PatientController {
         // Return same response as login
 
 
-        return ResponseEntity.ok(new JwtResponse(jwt, refreshToken.getToken()));
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(new JwtResponse(jwt));
     }
 
 }

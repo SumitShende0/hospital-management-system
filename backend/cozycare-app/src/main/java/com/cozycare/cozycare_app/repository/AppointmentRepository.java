@@ -13,4 +13,6 @@ import java.util.UUID;
 public interface AppointmentRepository extends JpaRepository<Appointment, UUID> {
 
     Page<Appointment> findByAppointmentStatus(Pageable pageable, AppointmentStatus appointmentBooked);
+
+    long countByAppointmentStatus(AppointmentStatus appointmentStatus);
 }

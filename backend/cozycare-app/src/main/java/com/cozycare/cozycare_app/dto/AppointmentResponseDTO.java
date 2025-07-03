@@ -13,4 +13,6 @@ public class AppointmentResponseDTO {
     private LocalDateTime expectedAppointmentDate;
     private String status;
     private String doctor;
+    private String reasonForAppointment;
+    private String reasonForCancellation;
 }

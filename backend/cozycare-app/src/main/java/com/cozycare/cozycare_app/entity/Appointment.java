@@ -1,13 +1,8 @@
 package com.cozycare.cozycare_app.entity;
 
 
-import com.cozycare.cozycare_app.annotation.ValidatePhysicianName;
 import com.cozycare.cozycare_app.model.AppointmentStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -28,18 +23,18 @@ public class Appointment {
 
     private LocalDateTime expectedAppointmentDate;
 
-//    @NotBlank(message = "Reason for cancellation is required")
+    //    @NotBlank(message = "Reason for cancellation is required")
     private String reasonForCancellation;
 
-//    @NotNull(message = "Appointment booking status is required")
+    //    @NotNull(message = "Appointment booking status is required")
     @Enumerated(EnumType.STRING)
     private AppointmentStatus appointmentStatus;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_id",nullable = false)
+    @JoinColumn(name = "patient_id", nullable = false)
 //    @NotNull(message = "Patient Id is required")
-    private Patient patientId;
+    private Patient patient;
 
 
     @PrePersist
