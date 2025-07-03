@@ -28,7 +28,9 @@
         <div class="mb-4">
           <h3 class="mb-4">Personal Information</h3>
           <div class="mb-3">
-            <label for="fullName" class="form-label">Full Name </label>
+            <label for="fullName" class="form-label"
+              >Full Name<sup>*</sup></label
+            >
             <input
               type="text"
               class="form-control bg-dark border-secondary"
@@ -41,7 +43,9 @@
           </div>
           <div class="row">
             <div class="mb-3 col-md-6">
-              <label for="emailInput" class="form-label">Email Address</label>
+              <label for="emailInput" class="form-label"
+                >Email Address<sup>*</sup></label
+              >
               <div class="input-group">
                 <span
                   class="input-group-text p-2 bg-dark border-end-0 border-secondary"
@@ -68,7 +72,9 @@
               }
             </div>
             <div class="mb-3 col-md-6">
-              <label for="phoneNumber" class="form-label">Phone Number</label>
+              <label for="phoneNumber" class="form-label"
+                >Phone Number<sup>*</sup></label
+              >
               <div class="">
                 <ngx-intl-tel-input
                   cssClass="form-control w-100 bg-dark border-secondary phone-custom"
@@ -88,7 +94,42 @@
           </div>
           <div class="row">
             <div class="mb-3 col-md-6">
-              <label for="dateOfBirth" class="form-label">Date of Birth</label>
+              <label for="password" class="form-label"
+                >Password <sup>*</sup></label
+              >
+              <div class="input-group">
+                <span class="input-group-text bg-dark border-secondary">
+                  <i class="bi bi-lock text-white"></i>
+                </span>
+                <input
+                  [type]="isPasswordVisible ? 'text' : 'password'"
+                  class="form-control bg-dark border-start-0 border-secondary"
+                  id="password"
+                  name="password"
+                  formControlName="password"
+                  required
+                  placeholder=""
+                />
+                <button
+                  class="btn btn-outline-secondary border-start-0 bg-dark border-secondary"
+                  type="button"
+                  (click)="togglePassword()"
+                >
+                  <i
+                    class="bi"
+                    [ngClass]="
+                      isPasswordVisible ? 'bi-eye-slash-fill' : 'bi-eye-fill'
+                    "
+                  ></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="mb-3 col-md-6">
+              <label for="dateOfBirth" class="form-label"
+                >Date of Birth<sup>*</sup></label
+              >
               <div class="input-group">
                 <span
                   class="input-group-text p-2 bg-dark border-end-0 border-secondary"
@@ -114,7 +155,7 @@
               }
             </div>
             <div class="mb-3 col-md-6">
-              <label for="gender" class="form-label">Gender</label>
+              <label for="gender" class="form-label">Gender<sup>*</sup></label>
               <div class="d-flex gap-2">
                 @for (gender of genderOptions; track gender) {
                 <div class="form-check">
@@ -194,27 +235,11 @@
         <div>
           <h3 class="mb-4">Medical Information</h3>
           <div class="mb-3">
-            <label for="primaryCarePhysician">Primary Care Physician</label>
-            <select
-              class="form-select mt-1 border-secondary"
-              aria-label="Default select example"
-              formControlName="primaryCarePhysician"
-            >
-              <option selected disabled>Select Primary Care Physician</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-              <!-- Todo add the list of doctors from the API
-              @for (item of items; track $index) {
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-              } -->
-            </select>
-            @if (patientForm.get('primaryCarePhysician')?.invalid &&
-            patientForm.get('primaryCarePhysician')?.touched) {
-            <div class="text-danger">This Field is required</div>
-            }
+            <app-dropdown-menu
+              [form]="patientForm"
+              [controlName]="'primaryCarePhysician'"
+              [options]="physiciansList"
+            ></app-dropdown-menu>
           </div>
           <div class="row">
             <div class="mb-3 col-md-6">
@@ -303,7 +328,7 @@
           <h3 class="mb-4">Identification and Verification</h3>
           <div class="mb-3">
             <label for="identificationType" class="form-label"
-              >Identification Type
+              >Identification Type<sup>*</sup>
             </label>
             <select
               class="form-select border-secondary"
@@ -311,7 +336,9 @@
               id="identificationType"
               formControlName="identificationType"
             >
-              <option selected disabled>Select Identification Type</option>
+              <option selected disabled>
+                Select Identification Type <sup>*</sup>
+              </option>
               @for (idType of identificationTypes; track idType) {
               <option [value]="idType">
                 {{ idType }}
@@ -325,7 +352,7 @@
           </div>
           <div class="mb-3">
             <label class="form-label" for="identificationNumber"
-              >Identification Number</label
+              >Identification Number <sup>*</sup></label
             >
             <input
               type="text"
@@ -345,7 +372,7 @@
           <app-file-input
             [form]="patientForm"
             controlName="identificationDocumentID"
-            >Scanned Copy of Identification Document</app-file-input
+            >Scanned Copy of Identification Document<sup>*</sup></app-file-input
           >
         </div>
         <div class="my-5">
@@ -359,7 +386,9 @@
               formControlName="consentToTreatment"
             />
             <label class="form-check-label" for="consentToTreatment">
-              I consent to receive treatment for my health condition.
+              I consent to receive treatment for my health condition.<sup
+                >*</sup
+              >
             </label>
             @if (patientForm.get('consentToTreatment')?.invalid &&
             patientForm.get('consentToTreatment')?.touched) {
@@ -376,7 +405,7 @@
             />
             <label class="form-check-label" for="consentToHealthInfoDisclosure">
               I consent to the use and disclosure of my health information for
-              treatment purposes.
+              treatment purposes.<sup>*</sup>
             </label>
             @if (patientForm.get('consentToHealthInfoDisclosure')?.invalid &&
             patientForm.get('consentToHealthInfoDisclosure')?.touched) {
@@ -392,7 +421,8 @@
               formControlName="privacyPolicyAgreement"
             />
             <label class="form-check-label" for="privacyPolicyAgreement">
-              I acknowledge that I have reviewed and agree to the privacy policy
+              I acknowledge that I have reviewed and agree to the privacy
+              policy<sup>*</sup>
             </label>
             @if (patientForm.get('privacyPolicyAgreement')?.invalid &&
             patientForm.get('privacyPolicyAgreement')?.touched) {
@@ -400,6 +430,9 @@
             }
           </div>
         </div>
+        @if (errorMessage) {
+          <p class="text-danger"> {{errorMessage}}</p>
+        }
         <app-button [isLoading]="isLoading" [invalid]="patientForm.invalid"
           >Submit And Continue</app-button
         >

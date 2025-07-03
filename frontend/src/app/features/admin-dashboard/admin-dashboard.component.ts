@@ -1,20 +1,24 @@
 import { AppointmentCancelComponent } from './../appointment-cancel/appointment-cancel.component';
 import { allAppointments, Doctors } from './../../model';
-import { DatePipe, NgFor, NgStyle } from '@angular/common';
+import { DatePipe, NgFor, NgIf, NgStyle } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppointmentScheduleComponent } from '../appointment-schedule/appointment-schedule.component';
 import { RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { AdminService } from '../../services/admin.service';
 
 @Component({
   selector: 'app-admin-dashboard',
   imports: [
     NgFor,
+    NgIf,
     DatePipe,
     NgbModule,
     AppointmentScheduleComponent,
     AppointmentCancelComponent,
-    RouterLink
+    RouterLink,
+    FormsModule,
   ],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css',
@@ -24,26 +28,46 @@ export class AdminDashboardComponent {
   pageSize = 5;
   collectionSize = 0;
   Math = Math;
+  selectedStatus = 'ALL';
+  selectedAppointment: any;
   @ViewChild(AppointmentScheduleComponent)
   appointmentScheduleComponent!: AppointmentScheduleComponent;
   @ViewChild(AppointmentCancelComponent)
   appointmentCancelComponent!: AppointmentCancelComponent;
+  totalNumberOfScheduleAppointment: number = 0;
+  totalNumberOfPendingAppointment: number = 0;
+  totalNumberOfCancelAppointment: number = 0;
+  selectedAction: 'schedule' | 'cancel' | null = null;
+  openAppointmentScheduleComponent(appointment: any) {
+    this.selectedAppointment = null;
+    this.selectedAction = null;
 
-  openAppointmentScheduleComponent() {
-    this.appointmentScheduleComponent.open();
+    setTimeout(() => {
+      this.selectedAppointment = appointment;
+      this.selectedAction = 'schedule';
+    });
   }
 
-  openAppointmentCancelComponent() {
-    this.appointmentCancelComponent.open();
+  openAppointmentCancelComponent(appointment: any) {
+    this.selectedAppointment = null; // Reset first
+    this.selectedAction = null;
+
+    // Force refresh input by resetting first
+    setTimeout(() => {
+      this.selectedAppointment = appointment;
+      this.selectedAction = 'cancel';
+    });
   }
   displayedAppointments: any = [];
   doctors: { image: string; name: string }[] = Doctors;
 
-  appointments: any = allAppointments;
+  constructor(private adminService: AdminService) {
+    // this.collectionSize = this.appointments.length;
+    // this.refreshAppointments();
+  }
 
-  constructor() {
-    this.collectionSize = this.appointments.length;
-    this.refreshAppointments();
+  ngOnInit() {
+    this.loadAppointments();
   }
 
   getDoctorProfile(name: string): string {
@@ -54,7 +78,7 @@ export class AdminDashboardComponent {
   refreshAppointments() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    this.displayedAppointments = this.appointments.slice(startIndex, endIndex);
+    this.loadAppointments();
   }
 
   onPageChange(page: number) {
@@ -64,11 +88,11 @@ export class AdminDashboardComponent {
 
   getStatusClass(status: string): string {
     switch (status) {
-      case 'Confirmed':
+      case 'SCHEDULED':
         return 'badge bg-success';
-      case 'Pending':
+      case 'PENDING':
         return 'badge bg-primary';
-      case 'Cancelled':
+      case 'CANCEL':
         return 'badge bg-danger';
       default:
         return 'badge bg-secondary';
@@ -77,11 +101,11 @@ export class AdminDashboardComponent {
 
   getStatusLogo(status: string): string {
     switch (status) {
-      case 'Confirmed':
+      case 'SCHEDULED':
         return 'assets/icons/check.svg';
-      case 'Pending':
+      case 'PENDING':
         return 'assets/icons/pending.svg';
-      case 'Cancelled':
+      case 'CANCEL':
         return 'assets/icons/close.svg';
       default:
         return 'badge bg-secondary';
@@ -102,5 +126,53 @@ export class AdminDashboardComponent {
       default:
         return 'none';
     }
+  }
+  loadAppointments(): void {
+    console.log(this.selectedStatus);
+
+    this.adminService
+      .getAppointment(this.currentPage, this.pageSize, this.selectedStatus)
+      .subscribe((response) => {
+        console.log(response);
+
+        this.displayedAppointments = response.content;
+        this.collectionSize = response.totalElements;
+      });
+
+    this.getTotalNumberOfCancelAppointment();
+    this.getTotalNumberOfPendingAppointment();
+    this.getTotalNumberOfScheduledAppointment();
+  }
+
+  onStatusChange() {
+    this.currentPage = 1;
+    this.loadAppointments();
+  }
+
+  getTotalNumberOfCancelAppointment() {
+    this.adminService
+      .totalNumberOfCancelAppointment('CANCEL')
+      .subscribe((response) => {
+        this.totalNumberOfCancelAppointment = response.count;
+        console.log('C' + this.totalNumberOfCancelAppointment);
+      });
+  }
+  getTotalNumberOfScheduledAppointment() {
+    this.adminService
+      .totalNumberOfScheduledAppointment('SCHEDULED')
+      .subscribe((response) => {
+        this.totalNumberOfScheduleAppointment = response.count;
+        console.log('s' + this.totalNumberOfScheduleAppointment);
+      });
+  }
+  getTotalNumberOfPendingAppointment() {
+    this.adminService
+      .totalNumberOfPendingAppointment('PENDING')
+      .subscribe((response) => {
+        this.totalNumberOfPendingAppointment = response.count;
+        console.log('P' + this.totalNumberOfPendingAppointment);
+
+        this.totalNumberOfPendingAppointment;
+      });
   }
 }

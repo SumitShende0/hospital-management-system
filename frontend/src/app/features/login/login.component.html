@@ -37,13 +37,14 @@
     ></ng-otp-input>
   </div>
   <div class="modal-footer">
-    <button
-      type="button"
-      class="btn btn-success w-100"
+    <app-button
       (click)="otpSubmit(otpInput)"
+      [isLoading]="isLoading"
+      [invalid]="false"
+      style="width: 100%"
     >
       Login
-    </button>
+    </app-button>
   </div>
 </ng-template>
 
@@ -69,8 +70,12 @@
       <div>
         <h2>Hi there, 👋</h2>
         <p class="opacity-50">Get Started with Appointments.</p>
-        <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
-          <div class="mb-3">
+        <form
+          class="bg-black"
+          #loginForm="ngForm"
+          (ngSubmit)="onSubmit(loginForm)"
+        >
+          <!-- <div class="mb-3">
             <label for="fullName" class="form-label">Full Name</label>
             <div class="input-group">
               <span
@@ -98,9 +103,11 @@
             <p class="text-danger" *ngIf="fullName.errors?.['required']">
               Full Name is required
             </p>
-          </div>
+          </div> -->
           <div class="mb-3">
-            <label for="emailInput" class="form-label">Email Address</label>
+            <label for="emailInput" class="form-label"
+              >Email Address <sup>*</sup></label
+            >
             <div class="input-group">
               <span
                 class="input-group-text p-2 bg-dark border-end-0 border-secondary"
@@ -134,6 +141,44 @@
             </p>
           </div>
           <div class="mb-3">
+            <label for="password" class="form-label"
+              >Password <sup>*</sup></label
+            >
+            <div class="input-group">
+              <span class="input-group-text bg-dark border-secondary">
+                <i class="bi bi-lock text-white"></i>
+              </span>
+              <input
+                [type]="isPasswordVisible ? 'text' : 'password'"
+                class="form-control bg-dark border-start-0 border-secondary"
+                id="password"
+                name="password"
+                ngModel
+                required
+                #password="ngModel"
+                placeholder=""
+              />
+              <button
+                class="btn btn-outline-secondary border-start-0 bg-dark border-secondary"
+                type="button"
+                (click)="togglePassword()"
+              >
+                <i
+                  class="bi"
+                  [ngClass]="
+                    isPasswordVisible ? 'bi-eye-slash-fill' : 'bi-eye-fill'
+                  "
+                ></i>
+              </button>
+            </div>
+          </div>
+
+          <div *ngIf="password.invalid && (password.touched || password.dirty)">
+            <p class="text-danger" *ngIf="password.errors?.['required']">
+              Password is required
+            </p>
+          </div>
+          <!-- <div class="mb-3">
             <label for="phoneNumber" class="form-label">Phone Number</label>
             <div class="">
               <ngx-intl-tel-input
@@ -147,7 +192,7 @@
                 #phone="ngModel"
               ></ngx-intl-tel-input>
             </div>
-          </div>
+          </div> -->
           <!-- <button
             style="width: 100%"
             class="btn btn-success mt-3"
@@ -157,12 +202,18 @@
             <img src="assets/icons/loader.svg" alt="" />
             }@else { Get Started }
           </button> -->
+          @if(errorMessage){
+          <p class="text-danger">{{ errorMessage }}</p>
+          }
+
           <app-button [isLoading]="isLoading" [invalid]="loginForm.invalid">
             Get Started
           </app-button>
         </form>
         <div class="d-flex mt-1 justify-content-between">
-          <a class="text-decoration-none" [routerLink]="['patient-form']">Register</a>
+          <a class="text-decoration-none" [routerLink]="['patient-form']"
+            >Register</a
+          >
           <a class="text-decoration-none link-primary" routerLink="admin"
             >Admin</a
           >

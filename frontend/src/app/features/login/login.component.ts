@@ -8,6 +8,7 @@ import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { CountryISO, SearchCountryField } from 'ngx-intl-tel-input';
 import { ButtonComponent } from '../button/button.component';
 import { HtmlTagDefinition } from '@angular/compiler';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,7 @@ import { HtmlTagDefinition } from '@angular/compiler';
     NgxIntlTelInputModule,
     ButtonComponent,
     NgClass,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
@@ -33,11 +34,20 @@ export class LoginComponent {
   adminOtp: string = '';
   otpError: string = '';
   modalRef: any;
+  userName: string = '';
+  password: string = '';
+  errorMessage: string = '';
+  isPasswordVisible = false;
+
+  togglePassword() {
+    this.isPasswordVisible = !this.isPasswordVisible;
+  }
 
   constructor(
     private modalService: NgbModal,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) {}
 
   ngAfterViewInit(): void {
@@ -62,19 +72,61 @@ export class LoginComponent {
   }
 
   otpSubmit(event: NgOtpInputComponent) {
-    if (this.adminOtp.match('123456')) {
-      if (this.modalRef) {
-        this.modalRef.close(); // this triggers .finally()
-        this.modalRef = null;
-      }
-      this.router.navigate(['admin-dashboard']);
-    } else {
-      this.otpError = 'Invalid OTP. Please try again.';
-      event.setValue('');
-    }
+    const credentials = {
+      userEmail: 'admin@example.com',
+      userPassword: this.adminOtp,
+    };
+    this.isLoading = true;
+    console.log(this.isLoading);
+    
+    localStorage.removeItem('access_token');
+    this.authService.login(credentials).subscribe({
+      next: (response) => {
+        //  successful login
+        console.log('Login success:', response);
+        localStorage.setItem('access_token', (response as any).token);
+        // do something like navigate to dashboard
+        this.isLoading = false;
+        if (this.modalRef) {
+          this.modalRef.close(); // this triggers .finally()
+          this.modalRef = null;
+        }
+        this.router.navigate(['admin-dashboard']);
+      },
+      error: (error) => {
+        console.log(error);
+        console.log(error.error);
+        this.otpError = 'Invalid OTP. Please try again.';
+        event.setValue('');
+        this.isLoading = false;
+      },
+    });
+   
   }
 
   onSubmit(loginForm: NgForm) {
-    console.log(loginForm.value);
+    const credentials = {
+      userEmail: loginForm.value.email,
+      userPassword: loginForm.value.password,
+    };
+    this.isLoading = true;
+    localStorage.removeItem('access_token');
+    this.authService.login(credentials).subscribe({
+      next: (response) => {
+        //  successful login
+        console.log('Login success:', response);
+        localStorage.setItem('access_token', (response as any).token);
+        // do something like navigate to dashboard
+        this.isLoading = false;
+        this.router.navigate(['appointment-form']);
+      },
+      error: (error) => {
+        console.log(error);
+        console.log(error.error);
+
+        this.errorMessage = error.error.message || 'Login failed';
+        this.isLoading = false;
+      },
+    });
   }
 }

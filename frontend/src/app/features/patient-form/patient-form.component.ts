@@ -1,6 +1,7 @@
+import { DropdownMenuComponent } from './../dropdown-menu/dropdown-menu.component';
 import { Component } from '@angular/core';
 import { CountryISO, NgxIntlTelInputModule } from 'ngx-intl-tel-input';
-import { Gender, IdentificationTypes } from '../../model';
+import { Doctors, Gender, IdentificationTypes } from '../../model';
 import { FileInputComponent } from '../file-input/file-input.component';
 import {
   AbstractControl,
@@ -10,6 +11,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { ButtonComponent } from '../button/button.component';
+import { PatientService } from '../../services/patient.service';
+import { Router } from '@angular/router';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-patient-form',
@@ -18,6 +22,8 @@ import { ButtonComponent } from '../button/button.component';
     FileInputComponent,
     ReactiveFormsModule,
     ButtonComponent,
+    DropdownMenuComponent,
+    NgClass,
   ],
   templateUrl: './patient-form.component.html',
   styleUrl: './patient-form.component.css',
@@ -26,7 +32,8 @@ export class PatientFormComponent {
   CountryISO = CountryISO;
   identificationTypes: string[] = IdentificationTypes;
   isLoading = false;
-
+  physiciansList = Doctors;
+  errorMessage: string = '';
   patientForm: FormGroup = new FormGroup({
     fullName: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -47,6 +54,7 @@ export class PatientFormComponent {
     identificationNumber: new FormControl('', Validators.required),
     identificationDocumentID: new FormControl('', Validators.required),
     consentToTreatment: new FormControl(false, Validators.requiredTrue),
+    password: new FormControl('', Validators.required),
     consentToHealthInfoDisclosure: new FormControl(
       false,
       Validators.requiredTrue
@@ -54,9 +62,33 @@ export class PatientFormComponent {
     privacyPolicyAgreement: new FormControl(false, Validators.requiredTrue),
   });
 
+  isPasswordVisible = false;
+
+  togglePassword() {
+    this.isPasswordVisible = !this.isPasswordVisible;
+  }
+
+  constructor(private patientService: PatientService, private router: Router) {}
+
   genderOptions: Gender[] = Object.values(Gender);
 
   onSubmit() {
+    this.isLoading = true;
     console.log('Form submitted:', this.patientForm.value);
+    localStorage.removeItem('access_token');
+    this.patientService.registerPatient(this.patientForm.value).subscribe({
+      next: (response) => {
+        console.log('Patient Created Successfully', response);
+        localStorage.setItem('access_token', (response as any).token);
+        this.isLoading = false;
+        this.router.navigate(['appointment-form']);
+      },
+
+      error: (error) => {
+        console.log(error);
+        this.isLoading = false;
+        this.errorMessage = error.error?.message || 'Something Went Wrong!!';
+      },
+    });
   }
 }

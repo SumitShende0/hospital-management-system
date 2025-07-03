@@ -8,7 +8,9 @@ import {
 } from '@angular/forms';
 import { Doctors } from '../../model';
 import { JsonPipe, NgFor, NgIf } from '@angular/common';
-import { DropdownMenuComponent } from "../dropdown-menu/dropdown-menu.component";
+import { DropdownMenuComponent } from '../dropdown-menu/dropdown-menu.component';
+import { AppointmentService } from '../../services/appointment.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-appointment-form',
@@ -19,6 +21,7 @@ import { DropdownMenuComponent } from "../dropdown-menu/dropdown-menu.component"
 export class AppointmentFormComponent {
   isLoading: boolean = false;
   physiciansList = Doctors;
+  errorMessage: string = '';
   appointmentForm: FormGroup = new FormGroup({
     doctor: new FormControl('', Validators.required),
     reasonForAppointment: new FormControl('', Validators.required),
@@ -26,7 +29,35 @@ export class AppointmentFormComponent {
     expectedAppointmentDate: new FormControl('', Validators.required),
   });
 
+  constructor(
+    private appointmentService: AppointmentService,
+    private router: Router
+  ) {}
+
   onSubmit() {
     console.log(this.appointmentForm.value);
+    this.isLoading = true;
+    this.appointmentService
+      .addAppointment(this.appointmentForm.value)
+      .subscribe({
+        next: (response) => {
+          console.log('Appointment successfully registered: ', response);
+          this.isLoading = false;
+          sessionStorage.setItem(
+            'successData',
+            JSON.stringify({
+              date: this.appointmentForm.get('expectedAppointmentDate')?.value,
+              doctor: this.appointmentForm.get('doctor')?.value,
+            })
+          );
+
+          this.router.navigate(['success-page']);
+        },
+        error: (error) => {
+          this.errorMessage = error.error?.message || 'Something Went Wrong!!';
+          console.log('Appointment registration failed: ', error);
+          this.isLoading = false;
+        },
+      });
   }
 }

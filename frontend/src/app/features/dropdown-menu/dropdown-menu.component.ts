@@ -14,16 +14,17 @@ export class DropdownMenuComponent {
   @Input() form!: FormGroup;
   @Input() controlName!: string;
 
-  selectedOption!: { image: string; name: string };
+  selectedOption!: { image: string; name: string } | null;
 
   ngOnInit() {
     const selectedName = this.form.get(this.controlName)?.value;
 
     this.selectedOption =
-      this.options.find((doc) => doc.name === selectedName) || this.options[0];
+      this.options.find((doc) => doc.name === selectedName) || null
   }
 
   selectOption(option: { image: string; name: string }) {
     this.form.get(this.controlName)?.setValue(option.name);
+    this.selectedOption = option
   }
 }

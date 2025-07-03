@@ -1,17 +1,19 @@
 <div class="d-flex flex-column align-items-center gap-4 pt-5">
   <div class="d-flex position-relative" style="right: 75px">
-    <img
-      class="position-absolute"
-      style="height: 60px; width: 60px; top: -15px; left: -15px"
-      src="assets/icons/logo.png"
-      alt=""
-    />
-    <h4
-      style="left: 40px; top: -2px"
-      class="align-self-center position-absolute"
-    >
-      CozyCare
-    </h4>
+    <a routerLink="/appointment-form">
+      <img
+        class="position-absolute"
+        style="height: 60px; width: 60px; top: -15px; left: -15px"
+        src="assets/icons/logo.png"
+        alt=""
+      />
+      <h4
+        style="left: 40px; top: -2px"
+        class="align-self-center position-absolute"
+      >
+        CozyCare
+      </h4>
+    </a>
   </div>
 
   <img
@@ -21,9 +23,9 @@
     alt="success"
   />
 
-  <div class="row ">
+  <div class="row">
     <div class="col-12 col-sm-9 mx-auto">
-      <h2 class="text-center ">
+      <h2 class="text-center">
         Your
         <span class="text-success">appointment request</span>
         has been successfully submitted!
@@ -47,19 +49,20 @@
       "
       class="d-flex rounded justify-content-evenly align-items-center py-4 col-lg-4 bg-transparent"
     >
-      <img
-        src="assets/images/dr-cruz.png"
-        alt="dr. image"
-        style="height: 30px"
-      />
-      <p class="mt-3">Dr Name Smith</p>
+      @for (doc of doctors; track doc.name) { @if (doc.name === doctor) {
+      <img [src]="doc.image" [alt]="doc.name" style="height: 30px" />
+      <p class="mt-3">Dr {{ doc.name }}</p>
+
+      } }
     </div>
     <div
       class="d-flex align-items-center col-lg-4 justify-content-center"
       style="height: 54px"
     >
       <img style="height: 25px" src="assets/icons/calendar.svg" alt="" />
-      <p class="m-1">23 June 2024 - 5:00 PM</p>
+      <p class="m-1">
+        {{ date | date : "EEEE, MMMM d, y 'at' h:mm" }}
+      </p>
     </div>
   </div>
 </div>

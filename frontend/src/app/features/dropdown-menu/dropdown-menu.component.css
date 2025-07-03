@@ -3,3 +3,7 @@
     width: 100%;
   }
   
+  button[ngbDropdownToggle].dropdown-toggle::after {
+    position: absolute;
+    right: 1rem; /* Adjust spacing to right edge */
+  }

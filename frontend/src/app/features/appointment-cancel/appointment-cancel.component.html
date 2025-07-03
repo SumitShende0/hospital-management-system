@@ -47,9 +47,9 @@
           <p>This field is required</p>
         </div>
       </div>
-      <app-button 
+      <app-button
         [isLoading]="isLoading"
-        [invalid]="appointmentCancelForm.invalid"
+        [invalid]="appointmentCancelForm.get('reasonForCancellation')?.value"
         [cssStyle]="'btn-danger'"
         >Cancel Appointment</app-button
       >

@@ -5,23 +5,23 @@ export interface LoginForm {
 }
 
 export const IdentificationTypes = [
-  'Birth Certificate',
-  "Driver's License",
-  'Medical Insurance Card/Policy',
-  'Military ID Card',
-  'National Identity Card',
-  'Passport',
-  'Resident Alien Card (Green Card)',
-  'Social Security Card',
-  'State ID Card',
-  'Student ID Card',
-  'Voter ID Card',
+  'BIRTH_CERTIFICATE',
+  'DRIVERS_LICENSE',
+  'MEDICAL_INSURANCE_CARD/POLICY',
+  'MILITARY_ID_CARD',
+  'NATIONAL_IDENTITY_CARD',
+  'PASSPORT',
+  'RESIDENT_ALIEN_CARD_(GREEN_CARD)',
+  'SOCIAL_SECURITY_CARD',
+  'STATE_ID_CARD',
+  'STUDENT_ID_CARD',
+  'VOTER_ID_CARD',
 ];
 
 export enum Gender {
-  Male = 'male',
-  Female = 'female',
-  Other = 'other',
+  Male = 'MALE',
+  Female = 'FEMALE',
+  Other = 'OTHER',
 }
 
 export const Doctors = [

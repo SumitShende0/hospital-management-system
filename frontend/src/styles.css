@@ -82,3 +82,11 @@ select {
   color: white;
   cursor: pointer;
 }
+
+sup {
+  color: red;
+}
+
+a {
+  cursor: pointer;
+}

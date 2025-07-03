@@ -146,6 +146,9 @@
               <p>This field is required</p>
             </div>
           </div>
+          @if (errorMessage) {
+          <p class="text-danger">{{ errorMessage }}</p>
+          }
           <app-button
             [isLoading]="isLoading"
             [invalid]="appointmentForm.invalid"
