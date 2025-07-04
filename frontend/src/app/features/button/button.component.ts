@@ -9,7 +9,7 @@ import { Component, Input } from '@angular/core';
 })
 export class ButtonComponent {
   @Input() isLoading: boolean = false;
-  @Input() invalid: boolean | null = true;
+  @Input() invalid: boolean | undefined = true;
   @Input({ required: false }) cssStyle: string = 'btn-success';
 
   get computedClasses(): string[] {

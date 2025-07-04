@@ -33,32 +33,50 @@ export class AppointmentCancelComponent {
     reasonForCancellation: new FormControl('', Validators.required),
   });
   selectedAppointment: any = '';
+  disableInitially = false;
   constructor(
     private modalService: NgbModal,
     private adminService: AdminService
   ) {}
 
+
   @Input() set appointment(data: any) {
     if (data) {
+      console.log('[Input Setter] appointment set:', data);
       this.selectedAppointment = data;
       this.initializeForm();
       setTimeout(() => {
+        console.log('[setTimeout] modalContent:', this.modalContent);
         if (this.modalContent) {
+          console.log('Incoming appointment:', data);
           this.open();
         } else {
           console.error('modalContent not found');
         }
       });
+    } else {
+      console.warn('⚠️ No data provided to @Input appointment');
     }
   }
 
   initializeForm() {
+
+    const hasInitialReason =
+      !!this.selectedAppointment.reasonForCancellation?.trim();
+
+    this.disableInitially = hasInitialReason;
+
     this.appointmentCancelForm = new FormGroup({
       reasonForCancellation: new FormControl(
         this.selectedAppointment.reasonForCancellation || '',
         Validators.required
       ),
     });
+    const control = this.appointmentCancelForm.get('reasonForCancellation');
+    if (control?.value) {
+      control.markAsTouched();
+      control.markAsDirty();
+    }
   }
 
   open() {

@@ -2,7 +2,12 @@ import { DisplayImageComponent } from './../display-image/display-image.componen
 import { AppointmentCancelComponent } from './../appointment-cancel/appointment-cancel.component';
 import { allAppointments, Doctors } from './../../model';
 import { DatePipe, NgFor, NgIf, NgStyle } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ViewChild,
+} from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppointmentScheduleComponent } from '../appointment-schedule/appointment-schedule.component';
 import { RouterLink } from '@angular/router';
@@ -77,7 +82,6 @@ export class AdminDashboardComponent {
     // this.collectionSize = this.appointments.length;
     // this.refreshAppointments();
     console.log('AdminDashboardComponent loaded');
-
   }
 
   ngOnInit() {

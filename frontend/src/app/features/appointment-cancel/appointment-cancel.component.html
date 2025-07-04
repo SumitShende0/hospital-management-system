@@ -49,7 +49,7 @@
       </div>
       <app-button
         [isLoading]="isLoading"
-        [invalid]="appointmentCancelForm.get('reasonForCancellation')?.value"
+        [invalid]="appointmentCancelForm.get('reasonForCancellation')?.invalid"
         [cssStyle]="'btn-danger'"
         >Cancel Appointment</app-button
       >
