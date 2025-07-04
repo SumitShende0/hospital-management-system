@@ -32,6 +32,7 @@ A full-stack Hospital Management System built with **Spring Boot** and **Angular
 ### 👨‍💼 Admin
 - View/manage all users
 - Cancel/approve appointments
+- Trigger email notifications on appointment updates
 
 ---
 
@@ -59,6 +60,27 @@ A full-stack Hospital Management System built with **Spring Boot** and **Angular
 
 1. Clone the repository
 2. Configure Oracle DB in `application.properties`
-3. Run the app:
-   ```bash
+3. Configure email settings:
+   ```properties
+   spring.mail.host=smtp.example.com
+   spring.mail.port=587
+   spring.mail.username=your-email@example.com
+   spring.mail.password=your-password
+   spring.mail.properties.mail.smtp.auth=true
+   spring.mail.properties.mail.smtp.starttls.enable=true
+   ```
+4. Run the app:
+   ```
    ./mvnw spring-boot:run
+   ```
+
+### 🌐 Frontend (Angular)
+1. Navigate to the Angular project directory
+2. Install dependencies:
+   ```
+   npm install
+   ```
+3. Run the app:
+   ```
+   ng serve
+   ```
