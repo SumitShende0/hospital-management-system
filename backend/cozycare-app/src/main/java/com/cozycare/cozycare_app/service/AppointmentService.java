@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Service
@@ -34,6 +35,9 @@ public class AppointmentService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     public Appointment registerAppointment(RegisterAppointmentDTO registerAppointment, String userEmail) {
         Appointment newAppointment = new Appointment();
@@ -99,7 +103,22 @@ public class AppointmentService {
         appointment.setDoctor(appointmentSchedule.getDoctor());
         appointment.setReasonForAppointment(appointmentSchedule.getReasonForAppointment());
 
-        return appointmentRepository.save(appointment);
+        Appointment saved = appointmentRepository.save(appointment);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy 'at' hh:mm a");
+
+        String formattedDate = saved.getExpectedAppointmentDate().format(formatter);
+
+        // ✅ Send email after scheduling
+        String email = saved.getPatient().getUser().getUserEmail();
+        String subject = "Your Appointment is Scheduled";
+        String message = "Dear " + saved.getPatient().getFullName() + ",\n\n"
+                + "Your appointment with Dr. " + saved.getDoctor()
+                + " is scheduled on " + formattedDate + ".\n\n"
+                + "Thank you,\nCozyCare";
+
+        emailService.sendAppointmentEmail(email, subject, message);
+        return saved;
     }
 
     @CacheEvict(value = {"appointments", "appointmentCounts"}, allEntries = true)
@@ -112,8 +131,17 @@ public class AppointmentService {
 
         appointment.setReasonForCancellation(appointmentCancel.getReasonForCancellation());
         appointment.setAppointmentStatus(AppointmentStatus.CANCEL);
-        return appointmentRepository.save(appointment);
+        Appointment saved = appointmentRepository.save(appointment);
 
+
+// 🔔 Send email
+        String email = appointment.getPatient().getUser().getUserEmail();
+        emailService.sendAppointmentEmail(
+                email,
+                "Appointment Cancelled",
+                "Your appointment has been cancelled. Reason: " + appointment.getReasonForCancellation()
+        );
+        return saved;
     }
 
     @Cacheable(value = "appointmentCounts", key = "#appointmentStatus")
