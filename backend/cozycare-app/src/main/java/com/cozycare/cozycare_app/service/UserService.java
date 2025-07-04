@@ -13,13 +13,18 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
+
     public User findByEmail(String userEmail) {
         return userRepository.findByUserEmail(userEmail);
     }
+
 
     public String encodePassword(String password) {
         return encoder.encode(password);
     }
 
 
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByUserEmail(email);
+    }
 }

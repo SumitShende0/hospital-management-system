@@ -16,7 +16,7 @@ public class PatientIdentificationImageService {
     private PatientIdentificationImageRepo patientIdentificationImageRepo;
 
 
-    @Cacheable(value = "identificationImages", key = "#id", unless = "#result == null || #result.isEmpty()")
+    @Cacheable(value = "identificationImages", key = "#id", unless = "#result == null || #result == null")
     public Optional<PatientIdentificationImage> getImage(UUID id) {
         return patientIdentificationImageRepo.findById(id);
     }

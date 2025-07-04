@@ -122,13 +122,12 @@ public class AppointmentService {
     }
 
     public void autoAppointmentCancel() {
-        appointmentRepository.findByAppointmentStatus(AppointmentStatus.PENDING)
+        appointmentRepository.findByAppointmentStatusAndExpectedAppointmentDateBefore(AppointmentStatus.PENDING, LocalDateTime.now())
                 .ifPresent(appointments -> {
                     appointments.forEach(appointment -> {
-                        if (appointment.getExpectedAppointmentDate().isBefore(LocalDateTime.now())) {
-                            appointment.setAppointmentStatus(AppointmentStatus.CANCEL);
-                            appointment.setReasonForCancellation("Appointment Date Expired before any action");
-                        }
+                        appointment.setAppointmentStatus(AppointmentStatus.CANCEL);
+                        appointment.setReasonForCancellation("Appointment Date Expired before any action");
+
                     });
                 });
     }

@@ -22,9 +22,8 @@ public class PatientIdentificationImageController {
     private PatientIdentificationImageService patientIdentificationImageService;
 
 
-    @PreAuthorize("hasRole('PATIENT')")
     @PostMapping("image/upload")
-    public ResponseEntity<UUID> saveImage(@RequestParam MultipartFile file) throws IOException {
+    public ResponseEntity<UUID> saveImage(@RequestParam("file") MultipartFile file) throws IOException {
         PatientIdentificationImage image = PatientIdentificationImage.builder()
                 .image(ImageUtility.compressBytes(file.getBytes()))
                 .name(file.getName())

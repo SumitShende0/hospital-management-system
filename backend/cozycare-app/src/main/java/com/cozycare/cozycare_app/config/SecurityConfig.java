@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/patient", "/api/login", "/api/refreshToken")
+                        .requestMatchers("/api/patient", "/api/login", "/api/refreshToken", "/api/check-email", "/api/image/upload")
                         .permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

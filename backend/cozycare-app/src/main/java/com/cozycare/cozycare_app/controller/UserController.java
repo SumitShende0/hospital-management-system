@@ -62,10 +62,14 @@ public class UserController {
                     new UsernamePasswordAuthenticationToken(userRequest.getUserEmail(), userRequest.getUserPassword())
             );
 
-            if (Role.ADMIN.name().equals(user.getUserRole())) {
-                appointmentService.autoAppointmentCancel();
-            }
+
             if (authentication.isAuthenticated()) {
+
+
+                if (Role.ADMIN.name().equals(user.getUserRole())) {
+                    appointmentService.autoAppointmentCancel();
+                }
+
                 // Generate JWT token and refresh token
                 //Delete old refresh token if exist
                 Optional<RefreshToken> existingRefreshToken = refreshTokenService.checkRefreshToken(user);
