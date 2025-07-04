@@ -14,6 +14,7 @@ import { ButtonComponent } from '../button/button.component';
 import { PatientService } from '../../services/patient.service';
 import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-patient-form',
@@ -34,6 +35,8 @@ export class PatientFormComponent {
   isLoading = false;
   physiciansList = Doctors;
   errorMessage: string = '';
+  emailInputValue: string = '';
+  emailError = '';
   patientForm: FormGroup = new FormGroup({
     fullName: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -64,6 +67,17 @@ export class PatientFormComponent {
 
   isPasswordVisible = false;
 
+  ngOnInit(){
+    this.patientForm
+      .get('email')
+      ?.valueChanges.pipe(
+        debounceTime(500), // wait 500ms after user stops typing
+        distinctUntilChanged() // only call if value is different from last
+      )
+      .subscribe((email: string) => {
+        this.emailAvailability(email);
+      });
+  }
   togglePassword() {
     this.isPasswordVisible = !this.isPasswordVisible;
   }
@@ -71,6 +85,20 @@ export class PatientFormComponent {
   constructor(private patientService: PatientService, private router: Router) {}
 
   genderOptions: Gender[] = Object.values(Gender);
+
+  emailAvailability(email: string) {
+    console.log(email);
+
+    if (!email) return;
+    
+    this.patientService.checkEmailAvailability(email).subscribe((response) => {
+      if (response.available) {
+        this.emailError = 'Email Already Register';
+      } else {
+        this.emailError = '';
+      }
+    });
+  }
 
   onSubmit() {
     this.isLoading = true;

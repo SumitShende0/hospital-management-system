@@ -32,7 +32,7 @@ export class AuthService {
   logout(): void {
     // Remove access token
     localStorage.removeItem('access_token');
-
+    
     this.router.navigate(['']);
   }
 }

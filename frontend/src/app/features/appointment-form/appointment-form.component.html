@@ -2,18 +2,20 @@
   <section class="w-100 d-flex flex-column align-items-center">
     <div class="w-75 d-flex flex-column gap-3 mt-5">
       <div class="d-flex position-relative mb-5">
-        <img
-          class="position-absolute"
-          style="height: 60px; width: 60px; top: -15px; left: -15px"
-          src="assets/icons/logo.png"
-          alt=""
-        />
-        <h4
-          style="left: 40px; top: -2px"
-          class="align-self-center position-absolute"
-        >
-          CozyCare
-        </h4>
+        <a routerLink="/">
+          <img
+            class="position-absolute"
+            style="height: 60px; width: 60px; top: -15px; left: -15px"
+            src="assets/icons/logo.png"
+            alt=""
+          />
+          <h4
+            style="left: 40px; top: -2px"
+            class="align-self-center position-absolute"
+          >
+            CozyCare
+          </h4>
+        </a>
       </div>
       <div class="my-3">
         <h1>Hey there 👋</h1>
@@ -26,7 +28,9 @@
           (submit)="onSubmit()"
         >
           <div class="mb-3 w-100">
-            <label class="form-label mb-3" for="doctor">Doctor</label>
+            <label class="form-label mb-3" for="doctor"
+              >Doctor <sup>*</sup></label
+            >
             <div class="input-group w-100">
               <span
                 class="input-group-text bg-dark border-end-0 border-secondary"
@@ -64,8 +68,8 @@
           <div class="mb-3 row">
             <div class="col-md-6">
               <label class="form-label mb-3" for="reasonForAppointment"
-                >Reason for appointment</label
-              >
+                >Reason for appointment <sup>*</sup>
+              </label>
               <textarea
                 name="reasonForAppointment"
                 id="reasonForAppointment"
@@ -84,8 +88,9 @@
                 <p>This field is required</p>
               </div>
             </div>
+
             <div class="col-md-6">
-              <label class="form-label mb-3" for="additionalComments"
+              <label class="form-label mt-3 mb-3" for="additionalComments"
                 >Additional comments/notes</label
               >
               <textarea
@@ -109,8 +114,8 @@
           </div>
           <div class="mb-3">
             <label for="expectedAppointmentDate" class="form-label mb-3"
-              >Expected appointment date</label
-            >
+              >Expected appointment date <sup>*</sup>
+            </label>
             <div class="input-group">
               <span
                 class="input-group-text ps-3 bg-dark border-end-0 border-secondary"

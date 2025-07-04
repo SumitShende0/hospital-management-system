@@ -69,6 +69,10 @@
               @if (patientForm.get('email')?.invalid &&
               patientForm.get('email')?.touched) {
               <div class="text-danger">This Field is required</div>
+              } @if (emailError) {
+              <div class="text-danger">
+                {{ emailError }}
+              </div>
               }
             </div>
             <div class="mb-3 col-md-6">
@@ -431,7 +435,7 @@
           </div>
         </div>
         @if (errorMessage) {
-          <p class="text-danger"> {{errorMessage}}</p>
+        <p class="text-danger">{{ errorMessage }}</p>
         }
         <app-button [isLoading]="isLoading" [invalid]="patientForm.invalid"
           >Submit And Continue</app-button

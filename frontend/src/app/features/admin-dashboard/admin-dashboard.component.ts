@@ -76,6 +76,8 @@ export class AdminDashboardComponent {
   constructor(private adminService: AdminService) {
     // this.collectionSize = this.appointments.length;
     // this.refreshAppointments();
+    console.log('AdminDashboardComponent loaded');
+
   }
 
   ngOnInit() {

@@ -21,4 +21,8 @@ export class SuccessPageComponent {
       this.doctor = doctor;
     }
   }
+
+  ngOnDestroy() {
+    sessionStorage.removeItem('successData');
+  }
 }

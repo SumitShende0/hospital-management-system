@@ -10,11 +10,17 @@ import { Doctors } from '../../model';
 import { JsonPipe, NgFor, NgIf } from '@angular/common';
 import { DropdownMenuComponent } from '../dropdown-menu/dropdown-menu.component';
 import { AppointmentService } from '../../services/appointment.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-appointment-form',
-  imports: [ButtonComponent, ReactiveFormsModule, NgIf, DropdownMenuComponent],
+  imports: [
+    ButtonComponent,
+    ReactiveFormsModule,
+    NgIf,
+    DropdownMenuComponent,
+    RouterLink,
+  ],
   templateUrl: './appointment-form.component.html',
   styleUrl: './appointment-form.component.css',
 })
@@ -31,8 +37,13 @@ export class AppointmentFormComponent {
 
   constructor(
     private appointmentService: AppointmentService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
+
+  ngOnInit() {
+    sessionStorage.removeItem('successData');
+  }
 
   onSubmit() {
     console.log(this.appointmentForm.value);
@@ -51,7 +62,7 @@ export class AppointmentFormComponent {
             })
           );
 
-          this.router.navigate(['success-page']);
+          this.router.navigate(['success-page'], { relativeTo: this.route });
         },
         error: (error) => {
           this.errorMessage = error.error?.message || 'Something Went Wrong!!';
