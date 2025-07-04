@@ -72,11 +72,7 @@ export class AppointmentCancelComponent {
         Validators.required
       ),
     });
-    const control = this.appointmentCancelForm.get('reasonForCancellation');
-    if (control?.value) {
-      control.markAsTouched();
-      control.markAsDirty();
-    }
+  
   }
 
   open() {
