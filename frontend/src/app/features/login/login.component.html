@@ -206,7 +206,7 @@
           <p class="text-danger">{{ errorMessage }}</p>
           }
 
-          <app-button [isLoading]="isLoading" [invalid]="loginForm.invalid">
+          <app-button [isLoading]="isLoading" [invalid]="loginForm.invalid || undefined">
             Get Started
           </app-button>
         </form>
