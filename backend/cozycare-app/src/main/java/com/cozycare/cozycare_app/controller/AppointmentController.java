@@ -48,11 +48,9 @@ public class AppointmentController {
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<AppointmentResponseDTO> appointmentDTOS = appointmentService.getAppointments(pageable, status);
 
-        if (appointmentDTOS.hasContent()) {
-            return ResponseEntity.ok(appointmentDTOS);
-        } else {
-            return ResponseEntity.noContent().build();
-        }
+
+        return ResponseEntity.ok(appointmentDTOS);
+
     }
 
     @PreAuthorize("hasRole('ADMIN')")
